@@ -11,6 +11,7 @@ package models;
 public class Quarto {
     private int num;
     private boolean ocupado;
+    private Reserva reserva;
 
     public Quarto() {}
 
@@ -29,4 +30,13 @@ public class Quarto {
     public void setOcupado(boolean ocupado) {
         this.ocupado = ocupado;
     }
+
+    public Reserva getReserva() {
+        return reserva;
+    }
+
+    public void setReserva(Reserva reserva) {
+        this.reserva = reserva;
+    }
+    
 }

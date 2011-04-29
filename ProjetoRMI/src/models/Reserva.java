@@ -12,7 +12,6 @@ import java.util.Calendar;
  * @author Thiago
  */
 public class Reserva {
-
     private Calendar dataPedido;
     private Calendar dataEntrada;
     private Calendar dataSaida;

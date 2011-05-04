@@ -50,4 +50,16 @@ public class Hotel {
     public void setQuartos(List<Quarto> quartos) {
         this.quartos = quartos;
     }
+
+    public void addQuarto(Quarto q) {
+        this.quartos.add(q);
+    }
+
+    public void deleteQuarto(int num) {
+        for (int i = 0; i<= quartos.size(); i++) {
+            if (num == (quartos.get(i).getNum())) {
+                quartos.remove(i);
+            }
+        }
+    }
 }

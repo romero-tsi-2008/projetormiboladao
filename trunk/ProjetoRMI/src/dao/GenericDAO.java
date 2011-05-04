@@ -5,6 +5,7 @@
 package dao;
 
 import java.io.*;
+import java.util.*;
 
 /**
  *
@@ -12,13 +13,15 @@ import java.io.*;
  */
 public class GenericDAO {
     //escrita
-    private FileOutputStream os; 
-    private ObjectOutputStream oos;
+
+    protected FileOutputStream os;
+    protected ObjectOutputStream oos;
     //leitura
-    private FileInputStream is;
-    private FileReader reader;
-    private BufferedReader leitor;
-    private ObjectInputStream ios;
+    protected FileInputStream is;
+    protected FileReader reader;
+    protected BufferedReader leitorBuffer;
+    protected ObjectInputStream ios;
+    protected static HashMap<String, ArrayList> banco;
 
     public GenericDAO(String arquivo) throws Exception {
         //escrita
@@ -26,25 +29,46 @@ public class GenericDAO {
         oos = new ObjectOutputStream(os);
         //leitura
         is = new FileInputStream(arquivo);
-        reader = new FileReader(arquivo);
-        leitor = new BufferedReader(reader);
         ios = new ObjectInputStream(is);
+        reader = new FileReader(arquivo);
+        leitorBuffer = new BufferedReader(reader);
+        //banco
+        banco = new HashMap<String, ArrayList>();
     }
 
-    public void persist(Object obj) throws Exception {
+    public void commit(Object obj) throws Exception {
         oos.writeObject(obj);
-        oos.close();
-    }
-
-    public void printFile() throws Exception {
-        Object linha = null;
-        while (((linha = leitor.readLine()) != null) && (leitor.read() != -1)) {
-            linha = ios.readObject();
-            System.out.println(linha);
-        }
     }
 
     public void close() throws Exception {
         oos.close();
     }
+
+    public void createEntity(String name, Object obj) {
+        banco.put(name, new ArrayList<Object>());
+    }
+
+    public void removeEntity(String name) {
+        for (String s : banco.keySet()) {
+            if (s.equals(name)) {
+                banco.remove(name);
+            }
+        }
+    }
+
+//    public void insert(String entityName, String rowName, Object value) {
+//        for (Map.Entry<String, ArrayList> entrada : banco.entrySet()) {
+//            if (entrada.getKey().equals(entityName)) {
+//                System.out.println(entrada.getValue());
+//            }
+//        }
+//    }
+
+//    public void printFile() throws Exception {
+//        Object linha = null;
+//        while (((linha = leitorBuffer.readLine()) != null) && (leitorBuffer.read() != -1)) {
+//            linha = ios.readObject();
+//            System.out.println(linha);
+//        }
+//    }
 }

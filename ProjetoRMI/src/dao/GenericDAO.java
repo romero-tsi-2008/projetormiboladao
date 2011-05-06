@@ -6,6 +6,7 @@ package dao;
 
 import java.io.*;
 import java.util.*;
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 /**
  *
@@ -23,6 +24,7 @@ public class GenericDAO {
     protected BufferedReader leitorBuffer;
     protected ObjectInputStream ios;
     protected HashMap<String, ArrayList> banco;
+    private String nomeBanco;
 
     public GenericDAO(String nomeBanco) throws Exception {
         if (new File(nomeBanco).exists()) {
@@ -42,6 +44,32 @@ public class GenericDAO {
         leitorBuffer = new BufferedReader(reader);
         //banco
         banco = new HashMap<String, ArrayList>();
+    }
+
+    private HashMap<String, ArrayList> getBanco() {
+        try{
+            if(banco == null) {
+                if(new File(nomeBanco).exists()) {
+                    FileInputStream file = new FileInputStream(nomeBanco);
+                    ObjectInputStream ob = new ObjectInputStream(file);
+                    banco = (HashMap<String, ArrayList>) ob.readObject();
+                    ob.close();
+                    file.close();
+                } else {
+                    FileOutputStream file = new FileOutputStream(nomeBanco);
+                    ObjectOutput ob = new ObjectOutputStream(file);
+                    banco = new HashMap<String, ArrayList>();
+                    ob.writeObject(banco);
+                    ob.close();
+                    file.close();
+                }
+            }
+            return banco;
+
+        } catch(Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
     
     public void commit() throws Exception {
@@ -94,14 +122,19 @@ public class GenericDAO {
 
     public void printDb() throws Exception {
         try {
-            Object linha = null;
-            while (((linha = leitorBuffer.readLine()) != null) && (leitorBuffer.read() != -1)) {
-                linha = (HashMap<String, ArrayList>) ios.readObject();
-//                for (ArrayList<Object> ar : linha) {
-//
-//                }
-                System.out.println(linha);
-            }
+            HashMap<String, ArrayList> b = (HashMap<String, ArrayList>) ios.readObject();
+            
+            System.out.println(b);
+            
+
+//            Object linha = null;
+//            while (((linha = leitorBuffer.readLine()) != null) && (leitorBuffer.read() != -1)) {
+//                linha = (HashMap<String, ArrayList>) ios.readObject();
+////                for (ArrayList<Object> ar : linha) {
+////
+////                }
+//                System.out.println(linha);
+//            }
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -5,13 +5,14 @@
 
 package models;
 
+import java.io.Serializable;
 import java.util.Calendar;
 
 /**
  *
  * @author romero
  */
-class UltimaHospedagem {
+class UltimaHospedagem implements Serializable {
     private Calendar data;
     private Hotel hotel;
     private Quarto quarto;

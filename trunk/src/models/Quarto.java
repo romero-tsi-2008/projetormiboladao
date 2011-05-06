@@ -4,11 +4,13 @@
  */
 package models;
 
+import java.io.Serializable;
+
 /**
  *
  * @author romero
  */
-public class Quarto {
+public class Quarto implements Serializable {
     private int num;
     private boolean ocupado;
     private Reserva reserva;
@@ -38,5 +40,4 @@ public class Quarto {
     public void setReserva(Reserva reserva) {
         this.reserva = reserva;
     }
-
 }

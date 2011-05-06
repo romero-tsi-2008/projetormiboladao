@@ -22,13 +22,17 @@ public class Main {
         // TODO code application logic here
         GenericDAO dao = new GenericDAO("banco.txt");
         Hotel hotel1 = new Hotel();
-        Quarto quarto1 = new Quarto();
+        hotel1.setNome("HOTEL 1");
 
+        Quarto quarto1 = new Quarto();
         quarto1.setNum(1);
         hotel1.addQuarto(quarto1);
 
         dao.createEntity("Hotel", hotel1);
 
+        dao.commit();
+        dao.printDb();
+        dao.close();
         
     }
 

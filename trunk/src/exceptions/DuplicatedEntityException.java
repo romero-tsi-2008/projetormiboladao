@@ -3,13 +3,13 @@
  * and open the template in the editor.
  */
 
-package dao;
+package exceptions;
 
 /**
  *
  * @author romero
  */
-class DuplicatedEntityException extends Exception {
+public class DuplicatedEntityException extends Exception {
     public DuplicatedEntityException() {
         super("ERRO: Esta entidade já existe cadastrada no banco.");
     }

@@ -3,13 +3,13 @@
  * and open the template in the editor.
  */
 
-package dao;
+package exceptions;
 
 /**
  *
  * @author romero
  */
-class InexistentEntityException extends Exception {
+public class InexistentEntityException extends Exception {
     public InexistentEntityException() {
         super("ERRO: A entidade que você está tentando remover não existe.");
     }

@@ -2,15 +2,12 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package dao;
+
+package models;
 
 import java.io.*;
 import java.util.*;
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
-
-import exceptions.DuplicatedEntityException;
-import exceptions.InexistentEntityException;
-
+import exceptions.*;
 /**
  *
  * @author romero

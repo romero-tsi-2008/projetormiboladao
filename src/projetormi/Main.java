@@ -33,8 +33,13 @@ public class Main {
         
         dao.insert("Hotel", hotel1);
         
+        dao.commit();       
+        dao.printDb();
+        
+        dao.removeEntity("Hotel");
         dao.commit();
         dao.printDb();
+        
         dao.close();
 //        
 //        dao = new GenericDAO("banco.txt");

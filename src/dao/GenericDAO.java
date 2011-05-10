@@ -96,22 +96,24 @@ public class GenericDAO {
             banco.put(name, new ArrayList<Object>());
     }
 
-    public void removeEntity(String name) throws InexistentEntityException {
+    public void removeEntity(String entityName) throws InexistentEntityException {
         for (String s : banco.keySet()) {
-            if (s.equals(name)) {
-                banco.remove(name);
+            if (s.equals(entityName)) {
+                banco.remove(entityName);
                 return;
             }
         }
         throw new InexistentEntityException();
     }
 
-    public void insert(String entityName, Object value) {
+    public void insert(String entityName, Object value) throws InexistentEntityException {
         for (Map.Entry<String, ArrayList> entrada : banco.entrySet()) {
             if (entrada.getKey().equals(entityName)) {
                 entrada.getValue().add(value);
+                return;
             }
         }
+        throw new InexistentEntityException();
     }
 
     public void printDb() throws Exception {
@@ -119,7 +121,6 @@ public class GenericDAO {
             HashMap<String, ArrayList> b = (HashMap<String, ArrayList>) ios.readObject();
             
             System.out.println(b);
-            
 
 //            Object linha = null;
 //            while (((linha = leitorBuffer.readLine()) != null) && (leitorBuffer.read() != -1)) {

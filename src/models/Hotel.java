@@ -60,8 +60,6 @@ public class Hotel implements Serializable {
         this.quartos = quartos;
     }
     
-    // MÉTODOS DE GERENCIAMENTO DO HOTEL
-
     public void setReservas(List<Reserva> reservas) {
 		this.reservas = reservas;
 	}
@@ -90,6 +88,8 @@ public class Hotel implements Serializable {
         }
     }
     
+    // MÉTODOS DE GERENCIAMENTO DO HOTEL
+    
     public boolean reservarQuarto(int numQuarto, String cpf, String dataEntrada, String dataSaida) {
     	for (Quarto q : quartos) {
     		if (q.getNum() == numQuarto) {
@@ -107,10 +107,17 @@ public class Hotel implements Serializable {
 						e.printStackTrace();
 					}
     				
-    				//falta verificar se o hospede possui debito com o hotel 
+    				for (Hospede h : hospedesCadastrados) {
+    					if (h.getCpf().equals(cpf)) {
+    						q.getReserva().setHospede(h);
+    					}
+    				}
+    				
+    				//falta verificar se o hospede possui debito com o hotel de acordo com a ultima hospedagem
     				
     				q.setOcupado(true);
-    				System.out.println("Reservar realizada com sucesso!");
+    				System.out.println("Reserva realizada com sucesso!");
+    				return true;
     			}
     			else {
     				System.out.println("Desculpe, o quarto está ocupado e não pode ser reservado");

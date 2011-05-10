@@ -11,9 +11,11 @@ package models;
  */
 public class Hospede {
     private String nome;
+    
     private String endereco;
     private String telefone;
     private String email;
+    private String cpf;
     private UltimaHospedagem ultimaHospedagem;
 
     public Hospede() {
@@ -51,7 +53,15 @@ public class Hospede {
         this.telefone = telefone;
     }
 
-    public UltimaHospedagem getUltimaHospedagem() {
+    public void setCpf(String cpf) {
+		this.cpf = cpf;
+	}
+
+	public String getCpf() {
+		return cpf;
+	}
+
+	public UltimaHospedagem getUltimaHospedagem() {
         return ultimaHospedagem;
     }
 

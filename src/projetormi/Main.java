@@ -31,22 +31,24 @@ public class Main {
 
         dao.createEntity("Hotel");
         
-        dao.commit();
-        dao.printDb();
-        dao.close();
-        
-        dao = new GenericDAO("banco.txt");
-        
-        Hotel hotel2 = new Hotel();
-        hotel1.setNome("HOTEL 2");
-
-        Quarto quarto2 = new Quarto();
-        quarto2.setNum(2);
-        hotel2.addQuarto(quarto2);
+        dao.insert("Hotel", hotel1);
         
         dao.commit();
         dao.printDb();
         dao.close();
+//        
+//        dao = new GenericDAO("banco.txt");
+//        
+//        Hotel hotel2 = new Hotel();
+//        hotel1.setNome("HOTEL 2");
+//
+//        Quarto quarto2 = new Quarto();
+//        quarto2.setNum(2);
+//        hotel2.addQuarto(quarto2);
+//        
+//        dao.commit();
+//        dao.printDb();
+//        dao.close();
     }
 
 }

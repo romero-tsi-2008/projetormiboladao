@@ -106,13 +106,13 @@ public class GenericDAO {
         throw new InexistentEntityException();
     }
 
-//    public void insert(String entityName, String rowName, Object value) {
-//        for (Map.Entry<String, ArrayList> entrada : banco.entrySet()) {
-//            if (entrada.getKey().equals(entityName)) {
-//                System.out.println(entrada.getValue());
-//            }
-//        }
-//    }
+    public void insert(String entityName, Object value) {
+        for (Map.Entry<String, ArrayList> entrada : banco.entrySet()) {
+            if (entrada.getKey().equals(entityName)) {
+                entrada.getValue().add(value);
+            }
+        }
+    }
 
     public void printDb() throws Exception {
         try {

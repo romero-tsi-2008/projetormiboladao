@@ -21,6 +21,7 @@ public class Main {
     public static void main(String[] args) throws Exception {
         // TODO code application logic here
         GenericDAO dao = new GenericDAO("banco.txt");
+        
         Hotel hotel1 = new Hotel();
         hotel1.setNome("HOTEL 1");
 
@@ -28,12 +29,24 @@ public class Main {
         quarto1.setNum(1);
         hotel1.addQuarto(quarto1);
 
-        dao.createEntity("Hotel", hotel1);
-
+        dao.createEntity("Hotel");
+        
         dao.commit();
         dao.printDb();
         dao.close();
         
+        dao = new GenericDAO("banco.txt");
+        
+        Hotel hotel2 = new Hotel();
+        hotel1.setNome("HOTEL 2");
+
+        Quarto quarto2 = new Quarto();
+        quarto2.setNum(2);
+        hotel2.addQuarto(quarto2);
+        
+        dao.commit();
+        dao.printDb();
+        dao.close();
     }
 
 }

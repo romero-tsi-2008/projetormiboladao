@@ -87,22 +87,13 @@ public class GenericDAO {
         oos.close();
     }
 
-    public void createEntity(String name, Object obj) throws DuplicatedEntityException {
+    public void createEntity(String name) throws DuplicatedEntityException {
         for (String s : banco.keySet()) {
             if (s.equals(name)) {
                 throw new DuplicatedEntityException();
             }
         }
-
-        if (banco.isEmpty()) {
             banco.put(name, new ArrayList<Object>());
-            banco.get(name).add(obj);
-        } else {
-            if (banco.get(name).isEmpty()) {
-                banco.get(name).add(obj);
-            }
-        }
-
     }
 
     public void removeEntity(String name) throws InexistentEntityException {

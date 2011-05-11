@@ -16,6 +16,7 @@ class UltimaHospedagem implements Serializable {
     private Calendar data;
     private Hotel hotel;
     private Quarto quarto;
+    private double divida;
    
     public Calendar getData() {
         return data;
@@ -40,4 +41,12 @@ class UltimaHospedagem implements Serializable {
     public void setQuarto(Quarto quarto) {
         this.quarto = quarto;
     }
+
+	public void setDivida(double divida) {
+		this.divida = divida;
+	}
+
+	public double getDivida() {
+		return divida;
+	}
 }

@@ -12,6 +12,8 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import dao.GenericDAO;
+
 /**
  *
  * @author romero
@@ -88,7 +90,32 @@ public class Hotel implements Serializable {
         }
     }
     
+    @Override
+    public String toString() {
+    	return "Nome: "+ getNome() + "\nEndereço: "+ getEndereco() + "\n---";
+    }
+    
     // MÉTODOS DE GERENCIAMENTO DO HOTEL
+    
+    public void cadastrarCliente(String nome, String cpf, String email, String telefone) throws Exception {
+    	for (Hospede h : hospedesCadastrados) {
+    		if (h.getCpf().equals(cpf)) {
+    			System.out.println("ERRO: o hóspede "+h.getNome()+" já se encontra cadastrado em no hotel "+this.nome+"!");
+    			return;
+    		}
+    	}
+    	
+    	Hospede novoHospede = new Hospede();
+    	novoHospede.setNome(nome);
+    	novoHospede.setCpf(cpf);
+    	novoHospede.setEmail(email);
+    	novoHospede.setTelefone(telefone);
+    	
+    	GenericDAO dao = new GenericDAO("banco.bin");
+    	dao.insert("Hospede", novoHospede);
+    	dao.commit();
+    	dao.close();
+    }
     
     public boolean reservarQuarto(int numQuarto, String cpf, String dataEntrada, String dataSaida) {
     	for (Quarto q : quartos) {
@@ -109,11 +136,15 @@ public class Hotel implements Serializable {
     				
     				for (Hospede h : hospedesCadastrados) {
     					if (h.getCpf().equals(cpf)) {
-    						q.getReserva().setHospede(h);
+    						if (h.getUltimaHospedagem().getDivida() == 0) {
+    							q.getReserva().setHospede(h);
+    						}
+    						else {
+    							System.out.println("ERRO: não é possível realizar reserva pois o hóspede "+h.getNome()+"possui pendência financeiras relativas à sua última hospedagem");
+    							return false;
+    						}
     					}
     				}
-    				
-    				//falta verificar se o hospede possui debito com o hotel de acordo com a ultima hospedagem
     				
     				q.setOcupado(true);
     				System.out.println("Reserva realizada com sucesso!");
@@ -127,4 +158,5 @@ public class Hotel implements Serializable {
     	}
     	return true;
     }
+    
 }

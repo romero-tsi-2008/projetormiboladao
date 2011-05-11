@@ -26,7 +26,7 @@ public class GenericDAO {
     protected FileReader reader;
     protected BufferedReader leitorBuffer;
     protected ObjectInputStream ios;
-    protected HashMap<String, ArrayList> banco;
+    protected HashMap<String, ArrayList<Object>> banco;
     private String nomeBanco;
 
     public GenericDAO(String nomeBanco) throws Exception {
@@ -46,22 +46,22 @@ public class GenericDAO {
         reader = new FileReader(arquivo);
         leitorBuffer = new BufferedReader(reader);
         //banco
-        banco = new HashMap<String, ArrayList>();
+        banco = new HashMap<String, ArrayList<Object>>();
     }
 
-    private HashMap<String, ArrayList> getBanco() {
+    private HashMap<String, ArrayList<Object>> getBanco() {
         try{
             if(banco == null) {
                 if(new File(nomeBanco).exists()) {
                     FileInputStream file = new FileInputStream(nomeBanco);
                     ObjectInputStream ob = new ObjectInputStream(file);
-                    banco = (HashMap<String, ArrayList>) ob.readObject();
+                    banco = (HashMap<String, ArrayList<Object>>) ob.readObject();
                     ob.close();
                     file.close();
                 } else {
                     FileOutputStream file = new FileOutputStream(nomeBanco);
                     ObjectOutput ob = new ObjectOutputStream(file);
-                    banco = new HashMap<String, ArrayList>();
+                    banco = new HashMap<String, ArrayList<Object>>();
                     ob.writeObject(banco);
                     ob.close();
                     file.close();
@@ -107,7 +107,7 @@ public class GenericDAO {
     }
 
     public void insert(String entityName, Object value) throws InexistentEntityException {
-        for (Map.Entry<String, ArrayList> entrada : banco.entrySet()) {
+        for (Map.Entry<String, ArrayList<Object>> entrada : banco.entrySet()) {
             if (entrada.getKey().equals(entityName)) {
                 entrada.getValue().add(value);
                 return;
@@ -120,7 +120,13 @@ public class GenericDAO {
         try {
             HashMap<String, ArrayList> b = (HashMap<String, ArrayList>) ios.readObject();
             
-            System.out.println(b);
+//            System.out.println(b);
+            for (Map.Entry<String, ArrayList<Object>> entrada : banco.entrySet()) {
+                    System.out.println(entrada.getKey());
+                    for (int i = 0; i < entrada.getValue().size(); i++) {
+                    	System.out.println(entrada.getValue().get(i).toString());
+                    }
+            }
 
 //            Object linha = null;
 //            while (((linha = leitorBuffer.readLine()) != null) && (leitorBuffer.read() != -1)) {

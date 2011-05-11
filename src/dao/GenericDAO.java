@@ -33,46 +33,59 @@ public class GenericDAO {
         if (new File(nomeBanco).exists()) {
             arquivo = new File(nomeBanco).getAbsoluteFile();
             System.out.println("Ja existia");
+            is = new FileInputStream(arquivo);
+            ios = new ObjectInputStream(is);
+            banco = (HashMap<String, ArrayList<Object>>)ios.readObject();
+            ios.close();
+            is.close();
         } else {
             arquivo = new File(nomeBanco);
             System.out.println("NOVO");
+            os = new FileOutputStream(arquivo);
+            oos = new ObjectOutputStream(os);
+            banco = new HashMap<String, ArrayList<Object>>();
+            oos.writeObject(banco);
+            System.out.println("escreveu");
+            oos.close();
+            os.close();
         }
         //escrita
-        os = new FileOutputStream(arquivo);
-        oos = new ObjectOutputStream(os);
         //leitura
-        is = new FileInputStream(arquivo);
-        ios = new ObjectInputStream(is);
-        reader = new FileReader(arquivo);
-        leitorBuffer = new BufferedReader(reader);
-        //banco
-        banco = new HashMap<String, ArrayList<Object>>();
+//        reader = new FileReader(arquivo);
+//        leitorBuffer = new BufferedReader(reader);
+//        //banco
+//        banco = new HashMap<String, ArrayList<Object>>();
     }
 
     private HashMap<String, ArrayList<Object>> getBanco() {
         try{
-            if(banco == null) {
-                if(new File(nomeBanco).exists()) {
-                    FileInputStream file = new FileInputStream(nomeBanco);
-                    ObjectInputStream ob = new ObjectInputStream(file);
-                    banco = (HashMap<String, ArrayList<Object>>) ob.readObject();
-                    ob.close();
-                    file.close();
-                } else {
-                    FileOutputStream file = new FileOutputStream(nomeBanco);
-                    ObjectOutput ob = new ObjectOutputStream(file);
-                    banco = new HashMap<String, ArrayList<Object>>();
-                    ob.writeObject(banco);
-                    ob.close();
-                    file.close();
-                }
-            }
+//            if(banco == null) {
+//                if(new File(nomeBanco).exists()) {
+//                    FileInputStream file = new FileInputStream(nomeBanco);
+//                    ObjectInputStream ob = new ObjectInputStream(file);
+//                    banco = (HashMap<String, ArrayList<Object>>) ob.readObject();
+//                    ob.close();
+//                    file.close();
+//                } else {
+//                    FileOutputStream file = new FileOutputStream(nomeBanco);
+//                    ObjectOutput ob = new ObjectOutputStream(file);
+//                    banco = new HashMap<String, ArrayList<Object>>();
+//                    ob.writeObject(banco);
+//                    ob.close();
+//                    file.close();
+//                }
+//            }
             return banco;
 
         } catch(Exception e) {
             e.printStackTrace();
             return null;
         }
+    }
+    
+    public void begin() throws Exception {
+    	os = new FileOutputStream(arquivo);
+        oos = new ObjectOutputStream(os);
     }
     
     public void commit() throws Exception {
@@ -106,19 +119,23 @@ public class GenericDAO {
         throw new InexistentEntityException();
     }
 
-    public void insert(String entityName, Object value) throws InexistentEntityException {
-        for (Map.Entry<String, ArrayList<Object>> entrada : banco.entrySet()) {
-            if (entrada.getKey().equals(entityName)) {
-                entrada.getValue().add(value);
-                return;
-            }
-        }
+    public boolean insert(String entityName, Object value) throws InexistentEntityException {
+    	if(banco.containsKey(entityName)) {
+    		banco.get(entityName).add(value);
+    		return true;
+    	}
+//        for (Map.Entry<String, ArrayList<Object>> entrada : banco.entrySet()) {
+//            if (entrada.getKey().equals(entityName)) {
+//                entrada.getValue().add(value);
+//                return;
+//            }
+//        }
         throw new InexistentEntityException();
     }
 
     public void printDb() throws Exception {
         try {
-            HashMap<String, ArrayList> b = (HashMap<String, ArrayList>) ios.readObject();
+//            HashMap<String, ArrayList> b = (HashMap<String, ArrayList>) ios.readObject();
             
 //            System.out.println(b);
             for (Map.Entry<String, ArrayList<Object>> entrada : banco.entrySet()) {

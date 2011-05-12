@@ -83,6 +83,7 @@ public class Hospede implements Serializable {
     		double valorDivida = getUltimaHospedagem().getDivida();
     		if (valor == valorDivida) {
     			getUltimaHospedagem().setDivida(valor - getUltimaHospedagem().getDivida());
+    			System.out.println("Dívida do hóspede "+this.getNome()+" do quarto "+getUltimaHospedagem().getQuarto().getNum()+" com valor de R$:"+getUltimaHospedagem().getDivida()+" paga com sucesso");
     			return true;
     		}
     		 

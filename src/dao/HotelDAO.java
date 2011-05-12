@@ -1,7 +1,13 @@
 package dao;
 
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import models.Hospede;
 import models.Hotel;
@@ -15,10 +21,11 @@ public class HotelDAO extends GenericDAO {
 	}
 	
 	public Hotel getHotelByName(String name) {
-		ArrayList<Object> hoteis = new ArrayList<Object>();
+		ArrayList<Object> hoteis;
         for (String s : banco.keySet()) {
-            if (s.equals("Hotel")) {
-            	hoteis = banco.get(name);
+//		for (Entry<String, ArrayList<Object>> entrada : banco.entrySet()) {
+            if (s.equals("HOTEL")) {
+            	hoteis = banco.get(s);
             	Iterator it = hoteis.iterator();
             	while (it.hasNext()) {
             		Hotel h = (Hotel) it.next();

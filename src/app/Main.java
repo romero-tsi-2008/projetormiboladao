@@ -5,9 +5,11 @@
 
 package app;
 
+import models.Hospede;
 import models.Hotel;
 import models.Quarto;
 import dao.GenericDAO;
+import dao.HotelDAO;
 
 /**
  *
@@ -77,6 +79,9 @@ public class Main {
 //        
 //        System.out.println(data);
 //        System.out.println(hj);
+    	
+    	
+    	
     }
 
 }

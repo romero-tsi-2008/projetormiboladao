@@ -28,6 +28,7 @@ public class Hotel implements Serializable {
 
     public Hotel() {
         quartos = new ArrayList<Quarto>();
+        hospedesCadastrados = new ArrayList<Hospede>();
     }
 
     public String getEndereco() {
@@ -92,7 +93,16 @@ public class Hotel implements Serializable {
     
     @Override
     public String toString() {
-    	return "Nome: "+ getNome() + "\nEndereço: "+ getEndereco() + "\n---";
+    	String impressora = "";
+    	int contador = 1;
+    	impressora = "Nome: "+ getNome() + "\nEndereço: "+ getEndereco() + "\nHóspedes cadastrados: "+hospedesCadastrados.size()+"\nLista de hóspedes:";
+    	for (Hospede h : hospedesCadastrados) {
+    		impressora += "\n"+String.valueOf(contador) + ".\n";
+    		impressora += h.toString();
+    		contador += 1;
+    	}
+    	impressora += "\n\n---";
+    	return impressora;
     }
     
     // MÉTODOS DE GERENCIAMENTO DO HOTEL
@@ -111,43 +121,60 @@ public class Hotel implements Serializable {
     	novoHospede.setEmail(email);
     	novoHospede.setTelefone(telefone);
     	
-    	GenericDAO dao = new GenericDAO("banco.bin");
-    	dao.insert("Hospede", novoHospede);
-    	dao.commit();
-    	dao.close();
+    	hospedesCadastrados.add(novoHospede);
+    	
+//    	GenericDAO dao = new GenericDAO("banco.bin");
+//    	dao.insertObject("Hospede", novoHospede);
+//    	dao.commit();
+//    	dao.close();
     }
     
     public boolean reservarQuarto(int numQuarto, String cpf, String dataEntrada, String dataSaida) {
+    	Hospede hospedeEmQuestao = new Hospede();
     	for (Quarto q : quartos) {
     		if (q.getNum() == numQuarto) {
     			if (!q.isOcupado()) {
-    				SimpleDateFormat formatador = new SimpleDateFormat("dd/MM/yyyy");
     				try {
-    					Calendar c = new GregorianCalendar();
-    					c.setTime(formatador.parse(dataEntrada));
-    					q.getReserva().setDataEntrada(c);
-    					
-    					c.setTime(formatador.parse(dataSaida));
-    					q.getReserva().setDataSaida(c);
-    				}
-    				catch (Exception e) {
-						e.printStackTrace();
-					}
-    				
-    				for (Hospede h : hospedesCadastrados) {
-    					if (h.getCpf().equals(cpf)) {
-    						if (h.getUltimaHospedagem().getDivida() == 0) {
-    							q.getReserva().setHospede(h);
+    					SimpleDateFormat formatador = new SimpleDateFormat("dd/MM/yyyy");
+    					Calendar saidaCalendar = new GregorianCalendar();
+    					saidaCalendar.setTime(formatador.parse(dataEntrada));
+
+    					Calendar entradaCalendar = new GregorianCalendar();
+    					entradaCalendar.setTime(formatador.parse(dataSaida));    						
+
+    					for (Reserva r : q.getReservas()) {
+    						if (r.getDataSaida().before(saidaCalendar)) { //se a data 
+    							Calendar hoje = new GregorianCalendar(); //pegando a data atual
+
+    							Reserva novaReserva = new Reserva();
+    							novaReserva.setDataPedido(hoje);
+    							novaReserva.setDataEntrada(entradaCalendar);
+    							novaReserva.setDataSaida(saidaCalendar);   		
+    							
+    							for (Hospede h : hospedesCadastrados) {
+    		    					if (h.getCpf().equals(cpf)) {
+    		    						hospedeEmQuestao = h;
+    		    						if (h.getUltimaHospedagem().getDivida() == 0) {
+    		    							novaReserva.setHospede(h);
+    		    						}
+    		    						else {
+    		    							System.out.println("ERRO: não é possível realizar reserva pois o hóspede "+h.getNome()+"possui pendência financeiras relativas à sua última hospedagem");
+    		    							return false;
+    		    						}
+    		    					}
+    		    				}
     						}
     						else {
-    							System.out.println("ERRO: não é possível realizar reserva pois o hóspede "+h.getNome()+"possui pendência financeiras relativas à sua última hospedagem");
+    							System.out.println("Desculpe, não é possível reservar o quarto "+q.getNum()+" do hotel "+this.getNome()+" no período requisitado");
     							return false;
     						}
     					}
     				}
+    				catch (Exception e) {
+    					e.printStackTrace();
+    				}    				
     				
-    				q.setOcupado(true);
-    				System.out.println("Reserva realizada com sucesso!");
+    				System.out.println("O quarto "+q.getNum()+" do hotel "+this.getNome()+" foi reservado com sucessp para o hóspede "+hospedeEmQuestao.getNome()+" para o período de "+dataEntrada+ " a "+dataSaida);
     				return true;
     			}
     			else {

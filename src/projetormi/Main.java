@@ -5,9 +5,9 @@
 
 package projetormi;
 
-import dao.GenericDAO;
 import models.Hotel;
 import models.Quarto;
+import dao.GenericDAO;
 
 /**
  *
@@ -26,40 +26,49 @@ public class Main {
         hotel1.setNome("HOTEL 1");
 
         Quarto quarto1 = new Quarto();
-        quarto1.setNum(1);
+        quarto1.setNum(1);        
         hotel1.addQuarto(quarto1);
-
+        hotel1.cadastrarCliente("Ryu", "120938578329", "ryu@haduuken.com", "1111-2424");
+        hotel1.cadastrarCliente("Ken", "012345678901", "ken@haduken.com", "2424-6969");
+        
         dao.begin();
         
-//        dao.createEntity("Hotel");
+        dao.createEntity("Hotel");
         
-//        dao.insert("Hotel", hotel1);
+        dao.insertObject("Hotel", hotel1);
         
-//        dao.commit();       
-        dao.printDb();
-        
-        dao.removeEntity("Hotel");
-        dao.commit();
-        dao.printDb();
-        
+        dao.commit();       
         dao.close();
         
-//        dao = new GenericDAO("banco.bin");
-//        
-//        Hotel hotel2 = new Hotel();
-//        hotel2.setNome("HOTEL 2");
-//
-//        Quarto quarto2 = new Quarto();
-//        quarto2.setNum(2);
-//        hotel2.addQuarto(quarto2);
-//        
+        Hotel hotel2 = new Hotel();
+        hotel2.setNome("HOTEL 2");
+
+        Quarto quarto2 = new Quarto();
+        quarto2.setNum(2);
+        hotel2.addQuarto(quarto2);
+        
+        dao.begin();
+        
+        dao.insertObject("Hotel", hotel2);
+        
+        dao.commit();
+        dao.printDb();       
+        dao.close();
+
+//        -------------------------------------
+        
 //        dao.begin();
-//        
-//        dao.insert("Hotel", hotel2);
-//        
-//        dao.commit();
 //        dao.printDb();
 //        dao.close();
+        
+        
+//        Calendar data = new GregorianCalendar();
+//        SimpleDateFormat formatador = new SimpleDateFormat("dd/MM/yyyy");
+//        Date hj = data.getTime();
+//        System.out.println(formatador.format(hj));
+//        
+//        System.out.println(data);
+//        System.out.println(hj);
     }
 
 }

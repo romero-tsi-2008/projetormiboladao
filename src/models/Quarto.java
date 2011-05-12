@@ -5,6 +5,7 @@
 package models;
 
 import java.io.Serializable;
+import java.util.*;
 
 /**
  *
@@ -13,7 +14,7 @@ import java.io.Serializable;
 public class Quarto implements Serializable {
     private int num;
     private boolean ocupado;
-    private Reserva reserva;
+    private List<Reserva> reservas;
 
     public Quarto() {}
 
@@ -33,11 +34,16 @@ public class Quarto implements Serializable {
         this.ocupado = ocupado;
     }
 
-    public Reserva getReserva() {
-        return reserva;
-}
+	public void setReservas(List<Reserva> reserva) {
+		this.reservas = reserva;
+	}
 
-    public void setReserva(Reserva reserva) {
-        this.reserva = reserva;
-    }
+	public List<Reserva> getReservas() {
+		return reservas;
+	}
+	
+	public void addReserva(Reserva novaReserva) {
+		reservas.add(novaReserva);
+	}
+
 }

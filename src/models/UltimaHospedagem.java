@@ -17,6 +17,10 @@ class UltimaHospedagem implements Serializable {
     private Hotel hotel;
     private Quarto quarto;
     private double divida;
+    
+    public UltimaHospedagem() {
+    	divida = 0;
+    }
    
     public Calendar getData() {
         return data;

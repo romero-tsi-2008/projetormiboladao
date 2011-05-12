@@ -5,11 +5,13 @@
 
 package models;
 
+import java.io.Serializable;
+
 /**
  *
  * @author romero
  */
-public class Hospede {
+public class Hospede implements Serializable {
     private String nome;
     private String endereco;
     private String telefone;
@@ -18,6 +20,7 @@ public class Hospede {
     private UltimaHospedagem ultimaHospedagem;
 
     public Hospede() {
+    	ultimaHospedagem = new UltimaHospedagem();
     }
 
     public String getEmail() {
@@ -70,7 +73,7 @@ public class Hospede {
     
     @Override
     public String toString() {
-    	return "Nome: "+ getNome() + "\nCPF: "+getCpf()+" \nE-mail: "+ getEmail() + "\nTelefone: " + getTelefone() + " \nEndereço: " + getEndereco() + "\n ---";
+    	return "Nome: "+ getNome() + "\nCPF: "+getCpf()+" \nE-mail: "+ getEmail() + "\nTelefone: " + getTelefone() + " \nEndereço: " + getEndereco() + "\nPossui dívida de: "+getUltimaHospedagem().getDivida()+" reais\n---";
     }
     
     //----------------------------------------------------------------

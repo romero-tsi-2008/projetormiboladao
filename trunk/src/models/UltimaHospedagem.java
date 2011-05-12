@@ -12,7 +12,7 @@ import java.util.Calendar;
  *
  * @author romero
  */
-class UltimaHospedagem implements Serializable {
+public class UltimaHospedagem implements Serializable {
     private Calendar data;
     private Hotel hotel;
     private Quarto quarto;

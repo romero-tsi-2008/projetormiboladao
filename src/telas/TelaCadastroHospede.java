@@ -37,7 +37,7 @@ public class TelaCadastroHospede extends JFrame {
 	}
 
 	private void initComponents() {
-		setUndecorated(true);
+//		setUndecorated(true);
 		setLayout(new GroupLayout());
 		add(getJLabel1(), new Constraints(new Leading(61, 12, 12), new Leading(59, 12, 12)));
 		add(getJLabel2(), new Constraints(new Leading(58, 12, 12), new Leading(95, 12, 12)));
@@ -195,6 +195,8 @@ public class TelaCadastroHospede extends JFrame {
 	}
 
 	private void jButton0ActionActionPerformed(ActionEvent event) {
+		TelaListagemHospedes tela = new TelaListagemHospedes();
+		tela.setVisible(true);
 		this.dispose();
 	}
 

@@ -44,7 +44,7 @@ public class TelaCadastroHotel extends JFrame {
 		add(getJTextField0(), new Constraints(new Leading(97, 274, 10, 10), new Leading(59, 12, 12)));
 		add(getJTextField2(), new Constraints(new Leading(97, 274, 12, 12), new Leading(135, 12, 12)));
 		setSize(420, 251);
-		setUndecorated(true);
+//		setUndecorated(true);
 	}
 
 	private JTextField getJTextField2() {

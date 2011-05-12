@@ -35,9 +35,9 @@ public class GenericDAO {
     protected BufferedReader leitorBuffer;
     protected ObjectInputStream ios;
     protected static HashMap<String, ArrayList<Object>> banco;
-    private String nomeBanco;
+    private String nomeBanco = "banco.bin";
 
-    public GenericDAO(String nomeBanco) throws Exception {
+    public GenericDAO() throws Exception {
         if (new File(nomeBanco).exists()) {
             arquivo = new File(nomeBanco).getAbsoluteFile();
 //            System.out.println("Ja existia");
@@ -135,17 +135,7 @@ public class GenericDAO {
         throw new InexistentEntityException();
     }
     
-    public void removeHotel(String HotelName) {
-    	if(banco.containsKey("Hotel")) {
-	    	for (int i=0; i<banco.get("Hotel").size(); i++) {
-	    		Hotel hotelAux = (Hotel) banco.get("Hotel").get(i); 
-	    		if (hotelAux.getNome().equals(HotelName)) {
-//	    			System.out.println(banco.get("Hotel").get(i).toString());
-	    			banco.get("Hotel").remove(i);
-	    		}
-	    	}
-    	}
-    }
+
     
     public void printDb() throws Exception {
         try {

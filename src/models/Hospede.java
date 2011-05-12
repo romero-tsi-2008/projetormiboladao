@@ -5,13 +5,15 @@
 
 package models;
 
+import interfaces.HospedeIF;
+
 import java.io.Serializable;
 
 /**
  *
  * @author romero
  */
-public class Hospede implements Serializable {
+public class Hospede implements Serializable, HospedeIF {
     private String nome;
     private String endereco;
     private String telefone;
@@ -103,4 +105,5 @@ public class Hospede implements Serializable {
     		System.out.println("O hóspede "+getNome()+ " de CPF = "+getCpf()+" não possui dívida no hotel "+getUltimaHospedagem().getHotel().getNome());
     	}
     }
+
 }

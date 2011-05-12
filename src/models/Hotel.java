@@ -6,26 +6,26 @@
 package models;
 
 import java.io.Serializable;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import dao.GenericDAO;
-
 /**
  *
  * @author romero
  */
-public class Hotel implements Serializable {
+public class Hotel extends UnicastRemoteObject implements Serializable {
     private String nome;
     private String endereco;
     private String nomeGerente;
     private List<Quarto> quartos;
     private List<Hospede> hospedesCadastrados;
 
-    public Hotel() {
+    public Hotel() throws RemoteException {
         quartos = new ArrayList<Quarto>();
         hospedesCadastrados = new ArrayList<Hospede>();
     }

@@ -24,9 +24,24 @@ public class HotelDAO extends GenericDAO {
             			return h;
             		}
             	}
-            	
             }
         }
         return null;
+	}
+	
+	public void removeHotelByNome(String name) {
+		ArrayList<Object> hoteis = new ArrayList<Object>();
+        for (String s : banco.keySet()) {
+            if (s.equals("Hotel")) {
+            	hoteis = banco.get(name);
+            	Iterator it = hoteis.iterator();
+            	while (it.hasNext()) {
+            		Hotel h = (Hotel) it.next();
+            		if (h.getNome().equals(name)) {
+            			banco.get(name).remove(h);
+            		}
+            	}
+            }
+        }
 	}
 }

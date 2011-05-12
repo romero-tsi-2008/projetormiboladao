@@ -13,7 +13,7 @@ public class Servidor {
 	public Servidor () throws RemoteException {
 		try {
 			Registry registry = LocateRegistry.createRegistry(Registry.REGISTRY_PORT);
-			HotelIF hotel = new HotelService("Tambau");
+			HotelIF hotel = new HotelService();
 			registry.rebind("rmi://localhost:1099/HotelService", hotel);
 			
 			System.out.println("---Servidor rodando---");

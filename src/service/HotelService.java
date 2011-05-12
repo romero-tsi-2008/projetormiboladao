@@ -2,6 +2,7 @@ package service;
 
 import interfaces.HotelIF;
 
+import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -18,50 +19,57 @@ import dao.HotelDAO;
 
 public class HotelService extends UnicastRemoteObject implements  HotelIF {
 	HotelDAO daoHotel; 
-	HospedeDAO daoHospede;
 	
-	public HotelService(String nomeHotel) throws Exception {
-		daoHotel = new HotelDAO(nomeHotel);
-		daoHospede = new HospedeDAO();
+	public HotelService() throws Exception {
 	}
 	
-	public boolean addQuarto(Quarto q) {
-		return daoHotel.addQuarto(q);
+	@Override
+	public boolean addQuarto(String nomeHotel, Quarto q) throws RemoteException {
+		return daoHotel.addQuarto(nomeHotel, q);
     }
 
-    public boolean deleteQuarto(int num) {
-    	return daoHotel.deleteQuarto(num);
+	@Override
+    public boolean deleteQuarto(String nomeHotel, int num) throws RemoteException {
+    	return daoHotel.deleteQuarto(nomeHotel, num);
     }
     
-    public boolean cadastrarCliente(String nome, String cpf, String email, String telefone) {
-    	return daoHotel.cadastrarCliente(nome, cpf, email, telefone);
+	@Override
+    public boolean cadastrarCliente(String nomeHotel, String nome, String cpf, String email, String telefone) throws RemoteException {
+    	return daoHotel.cadastrarCliente(nomeHotel, nome, cpf, email, telefone);
     }
     
-    public boolean reservarQuarto(int numQuarto, String cpf, String dataEntrada, String dataSaida) {
-    	return daoHotel.reservarQuarto(numQuarto, cpf, dataEntrada, dataSaida);
+	@Override
+    public boolean reservarQuarto(String nomeHotel, int numQuarto, String cpf, String dataEntrada, String dataSaida) throws RemoteException {
+    	return daoHotel.reservarQuarto(nomeHotel, numQuarto, cpf, dataEntrada, dataSaida);
     }
     
-    public boolean alocarHospedeQuarto(int num, String cpf) {
-    	return alocarHospedeQuarto(num, cpf);
+	@Override
+    public boolean alocarHospedeQuarto(String nomeHotel, int num, String cpf) throws RemoteException {
+    	return alocarHospedeQuarto(nomeHotel, num, cpf);
     }
     
-    public boolean pagarDivida(String cpf, double valor) {
-    	return daoHotel.pagarDivida(cpf, valor);
+	@Override
+    public boolean pagarDivida(String nomeHotel, String cpf, double valor) throws RemoteException {
+    	return daoHotel.pagarDivida(nomeHotel, cpf, valor);
     }
     
-    public void consultarPendenciaFinanceiraHospede() {
-    	consultarPendenciaFinanceiraHospede();
+	@Override
+    public void consultarPendenciaFinanceiraHospede(String nomeHotel, String cpf) throws RemoteException {
+    	consultarPendenciaFinanceiraHospede(nomeHotel, cpf);
     }
        
-    public Hospede getHospedeByCpf(String cpf) {
-    	return daoHotel.getHospedeByCpf(cpf);
+	@Override
+    public Hospede getHospedeByCpf(String nomeHotel, String cpf) throws RemoteException {
+    	return daoHotel.getHospedeByCpf(nomeHotel, cpf);
     }
     
-	public boolean removeHospedeByCpf(String cpf) {
-		return daoHotel.removeHospedeByCpf(cpf);
+	@Override
+	public boolean removeHospedeByCpf(String nomeHotel, String cpf) throws RemoteException {
+		return daoHotel.removeHospedeByCpf(nomeHotel, cpf);
 	}
     
-    public void testar() {
+	@Override
+    public void testar() throws RemoteException {
     	System.out.println("---TESTANDO---");
     }
 

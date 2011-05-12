@@ -113,7 +113,7 @@ public class TelaListagemHospedes extends JFrame {
 			jButton0.addActionListener(new ActionListener() {
 	
 				public void actionPerformed(ActionEvent event) {
-					jButton0ActionActionPerformed(event);
+					jButton0ActionActionPerformed(event); 
 				}
 			});
 		}

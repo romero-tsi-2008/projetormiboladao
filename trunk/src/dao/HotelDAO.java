@@ -9,15 +9,9 @@ import models.Quarto;
 import models.Reserva;
 
 public class HotelDAO extends GenericDAO {
-	Hotel hotel;
 	
-	public Hotel getHotel() {
-		return hotel;
-	}
-
-	public HotelDAO(String nomeHotel) throws Exception {
+	public HotelDAO() throws Exception {
 		super();
-		hotel = getHotelByName(nomeHotel);
 	}
 	
 	public Hotel getHotelByName(String name) {
@@ -77,12 +71,14 @@ public class HotelDAO extends GenericDAO {
 		return impressora;
 	}
 	
-	public boolean addQuarto(Quarto q) {
+	public boolean addQuarto(String nomeHotel, Quarto q) {
+		Hotel hotel = getHotelByName(nomeHotel);
         hotel.getQuartos().add(q);
         return true;
     }
 
-    public boolean deleteQuarto(int num) {
+    public boolean deleteQuarto(String nomeHotel, int num) {
+    	Hotel hotel = getHotelByName(nomeHotel);
         for (int i = 0; i<= hotel.getQuartos().size(); i++) {
             if (num == (hotel.getQuartos().get(i).getNum())) {
                 hotel.getQuartos().remove(i);
@@ -92,7 +88,8 @@ public class HotelDAO extends GenericDAO {
         return false;
     }
     
-    public boolean cadastrarCliente(String nome, String cpf, String email, String telefone) {
+    public boolean cadastrarCliente(String nomeHotel, String nome, String cpf, String email, String telefone) {
+    	Hotel hotel = getHotelByName(nomeHotel);
     	for (Hospede h : hotel.getHospedesCadastrados()) {
     		if (h.getCpf().equals(cpf)) {
     			System.out.println("ERRO: o hóspede "+h.getNome()+" já se encontra cadastrado em no hotel "+hotel.getNome()+"!");
@@ -110,7 +107,8 @@ public class HotelDAO extends GenericDAO {
     	return true;
     }
     
-    public boolean reservarQuarto(int numQuarto, String cpf, String dataEntrada, String dataSaida) {
+    public boolean reservarQuarto(String nomeHotel, int numQuarto, String cpf, String dataEntrada, String dataSaida) {
+    	Hotel hotel = getHotelByName(nomeHotel);
     	Hospede hospedeEmQuestao = new Hospede();
     	for (Quarto q : hotel.getQuartos()) {
     		if (q.getNum() == numQuarto) {
@@ -189,9 +187,10 @@ public class HotelDAO extends GenericDAO {
     	return true;
     }
     
-    public boolean alocarHospedeQuarto(int num, String cpf) {
+    public boolean alocarHospedeQuarto(String nomeHotel, int num, String cpf) {
+    	Hotel hotel = getHotelByName(nomeHotel);
     	Quarto quartoAux = null;
-    	Hospede hospedeAux = this.getHospedeByCpf(cpf);
+    	Hospede hospedeAux = getHospedeByCpf(nomeHotel, cpf);
     	for (Quarto q : hotel.getQuartos()) {
     		if (q.getNum() == num) {
     			q.setHospede(hospedeAux);
@@ -204,8 +203,9 @@ public class HotelDAO extends GenericDAO {
     	return false;
     }
     
-    public boolean pagarDivida(String cpf, double valor) {
-    	Hospede hospedeAux = this.getHospedeByCpf(cpf);  
+    public boolean pagarDivida(String nomeHotel, String cpf, double valor) {
+    	Hotel hotel = getHotelByName(nomeHotel);
+    	Hospede hospedeAux = getHospedeByCpf(nomeHotel, cpf);  
     	if (hospedeAux.getUltimaHospedagem().getDivida() > 0) {
     		double valorDivida = hospedeAux.getUltimaHospedagem().getDivida();
     		if (valor == valorDivida) {
@@ -221,8 +221,8 @@ public class HotelDAO extends GenericDAO {
     	return true;
     }
     
-    public void consultarPendenciaFinanceiraHospede(String cpf) {
-    	Hospede hospedeAux = getHospedeByCpf(cpf);
+    public void consultarPendenciaFinanceiraHospede(String nomeHotel, String cpf) {
+    	Hospede hospedeAux = getHospedeByCpf(nomeHotel, cpf);
     	if (hospedeAux.getUltimaHospedagem().getDivida() > 0) {
     		System.out.println("O hóspede "+hospedeAux.getNome()+ " de CPF = "+hospedeAux.getCpf()+" possui dívida no valor de R$:"+hospedeAux.getUltimaHospedagem().getDivida()+" devido à sua última hospedagem no quarto " +hospedeAux.getUltimaHospedagem().getQuarto().getNum()+" do hotel "+hospedeAux.getUltimaHospedagem().getHotel().getNome());
     	}
@@ -231,7 +231,7 @@ public class HotelDAO extends GenericDAO {
     	}
     }
     
-    public Hospede getHospedeByCpf(String cpf) {
+    public Hospede getHospedeByCpf(String nomeHotel, String cpf) {
 //		ArrayList<Object> hospedes = new ArrayList<Object>();
 //		for (String s : banco.keySet()) {
 //			if (s.equals("Hospede")) {
@@ -246,7 +246,9 @@ public class HotelDAO extends GenericDAO {
 //			}
 //		}
 //		return null;
-    	for (Hospede h : hotel.getHospedesCadastrados()) {
+    	Hotel hotelAux = getHotelByName(nomeHotel);
+    	
+    	for (Hospede h : hotelAux.getHospedesCadastrados()) {
     		if (h.getCpf().equals(cpf)) {
     			return h;
     		}
@@ -254,7 +256,7 @@ public class HotelDAO extends GenericDAO {
     	return null;
 	}
 	
-	public boolean removeHospedeByCpf(String cpf) {
+	public boolean removeHospedeByCpf(String nomeHotel, String cpf) {
 //		ArrayList<Object> hospedes = new ArrayList<Object>();
 //        for (String s : banco.keySet()) {
 //            if (s.equals("Hospede")) {
@@ -270,9 +272,12 @@ public class HotelDAO extends GenericDAO {
 //            }
 //        }
 //        return false;
-    	for (Hospede h : hotel.getHospedesCadastrados()) {
+		Hospede hospedeAux = getHospedeByCpf(nomeHotel, cpf);
+		Hotel hotelAux = getHotelByName(nomeHotel);
+		
+    	for (Hospede h : hotelAux.getHospedesCadastrados()) {
     		if (h.getCpf().equals(cpf)) {
-    			hotel.getHospedesCadastrados().remove(h);
+    			hotelAux.getHospedesCadastrados().remove(h);
     			return true;
     		}
     	}

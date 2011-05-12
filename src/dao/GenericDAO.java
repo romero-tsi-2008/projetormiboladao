@@ -170,6 +170,5 @@ public class GenericDAO {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 }

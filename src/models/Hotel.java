@@ -5,6 +5,8 @@
 
 package models;
 
+import interfaces.HotelIF;
+
 import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -18,7 +20,7 @@ import java.util.List;
  *
  * @author romero
  */
-public class Hotel extends UnicastRemoteObject implements Serializable {
+public class Hotel implements Serializable {
     private String nome;
     private String endereco;
     private String nomeGerente;
@@ -89,15 +91,6 @@ public class Hotel extends UnicastRemoteObject implements Serializable {
 		}
 		return cont;
 	}
-
-	public Hospede getHospedePorCpf(String cpf) {
-		for (Hospede h : hospedesCadastrados) {
-			if (h.getCpf().equals(cpf)) {
-				return h;
-			}
-		}
-		return null;
-	}
 	
     @Override
     public String toString() {
@@ -113,137 +106,5 @@ public class Hotel extends UnicastRemoteObject implements Serializable {
     	}
     	impressora += "\n\n---";
     	return impressora;
-    }
-    
-    // MÉTODOS DE GERENCIAMENTO DO HOTEL
-    
-	public void addQuarto(Quarto q) {
-        this.quartos.add(q);
-    }
-
-    public void deleteQuarto(int num) {
-        for (int i = 0; i<= quartos.size(); i++) {
-            if (num == (quartos.get(i).getNum())) {
-                quartos.remove(i);
-            }
-        }
-    }
-    
-    public void cadastrarCliente(String nome, String cpf, String email, String telefone) throws Exception {
-    	for (Hospede h : hospedesCadastrados) {
-    		if (h.getCpf().equals(cpf)) {
-    			System.out.println("ERRO: o hóspede "+h.getNome()+" já se encontra cadastrado em no hotel "+this.nome+"!");
-    			return;
-    		}
-    	}
-    	
-    	Hospede novoHospede = new Hospede();
-    	novoHospede.setNome(nome);
-    	novoHospede.setCpf(cpf);
-    	novoHospede.setEmail(email);
-    	novoHospede.setTelefone(telefone);
-    	
-    	hospedesCadastrados.add(novoHospede);
-    	
-//    	GenericDAO dao = new GenericDAO("banco.bin");
-//    	dao.insertObject("Hospede", novoHospede);
-//    	dao.commit();
-//    	dao.close();
-    }
-    
-    public boolean reservarQuarto(int numQuarto, String cpf, String dataEntrada, String dataSaida) {
-    	Hospede hospedeEmQuestao = new Hospede();
-    	for (Quarto q : quartos) {
-    		if (q.getNum() == numQuarto) {
-    			if (!q.isOcupado()) {
-    				try {
-    					SimpleDateFormat formatador = new SimpleDateFormat("dd/MM/yyyy");
-    					Calendar saidaCalendar = new GregorianCalendar();
-    					saidaCalendar.setTime(formatador.parse(dataEntrada));
-
-    					Calendar entradaCalendar = new GregorianCalendar();
-    					entradaCalendar.setTime(formatador.parse(dataSaida));    						
-
-    					if (q.getReservas().size() == 0) {
-    						Calendar hoje = new GregorianCalendar(); //pegando a data atual
-
-							Reserva novaReserva = new Reserva();
-							novaReserva.setDataPedido(hoje);
-							novaReserva.setDataEntrada(entradaCalendar);
-							novaReserva.setDataSaida(saidaCalendar);   		
-							
-							for (Hospede h : hospedesCadastrados) {
-		    					if (h.getCpf().equals(cpf)) {
-		    						hospedeEmQuestao = h;
-		    						if (h.getUltimaHospedagem().getDivida() == 0) {
-		    							novaReserva.setHospede(h);
-		    						}
-		    						else {
-		    							System.out.println("ERRO: não é possível realizar reserva pois o hóspede "+h.getNome()+"possui pendência financeiras relativas à sua última hospedagem");
-		    							return false;
-		    						}
-		    					}
-		    				}
-    					}
-    					
-    					for (Reserva r : q.getReservas()) {
-    						if (r.getDataSaida().before(saidaCalendar)) { //se a data 
-    							Calendar hoje = new GregorianCalendar(); //pegando a data atual
-
-    							Reserva novaReserva = new Reserva();
-    							novaReserva.setDataPedido(hoje);
-    							novaReserva.setDataEntrada(entradaCalendar);
-    							novaReserva.setDataSaida(saidaCalendar);   		
-    							
-    							for (Hospede h : hospedesCadastrados) {
-    		    					if (h.getCpf().equals(cpf)) {
-    		    						hospedeEmQuestao = h;
-    		    						if (h.getUltimaHospedagem().getDivida() == 0) {
-    		    							novaReserva.setHospede(h);
-    		    						}
-    		    						else {
-    		    							System.out.println("ERRO: não é possível realizar reserva pois o hóspede "+h.getNome()+"possui pendência financeiras relativas à sua última hospedagem");
-    		    							return false;
-    		    						}
-    		    					}
-    		    				}
-    						}
-    						else {
-    							System.out.println("Desculpe, não é possível reservar o quarto "+q.getNum()+" do hotel "+this.getNome()+" no período requisitado");
-    							return false;
-    						}
-    					}
-    				}
-    				catch (Exception e) {
-    					e.printStackTrace();
-    				}    				
-    				
-    				System.out.println("O quarto "+q.getNum()+" do hotel "+this.getNome()+" foi reservado com sucessp para o hóspede "+hospedeEmQuestao.getNome()+" para o período de "+dataEntrada+ " a "+dataSaida);
-    				return true;
-    			}
-    			else {
-    				System.out.println("Desculpe, o quarto está ocupado e não pode ser reservado");
-    				return false;
-    			}
-    		}
-    	}
-    	return true;
-    }
-    
-    public void alocarHospedeAQuarto(int num, String cpf) {
-    	Quarto quartoAux = null;
-    	Hospede hospedeAux = getHospedePorCpf(cpf);
-    	for (Quarto q : quartos) {
-    		if (q.getNum() == num) {
-    			q.setHospede(hospedeAux);
-    			q.setOcupado(true);
-    			quartoAux = q;
-    		}
-    	}
-    	System.out.println("Hóspede "+hospedeAux.getNome()+" alocado ao quarto "+quartoAux.getNum()+" com sucesso");
-    }
-    
-    public void testar() {
-    	System.out.println("---TESTANDO---");
     }
 }

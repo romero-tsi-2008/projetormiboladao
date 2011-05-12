@@ -78,32 +78,4 @@ public class Hospede implements Serializable, HospedeIF {
     	return "Nome: "+ getNome() + "\nCPF: "+getCpf()+" \nE-mail: "+ getEmail() + "\nTelefone: " + getTelefone() + " \nEndereço: " + getEndereco() + "\nPossui dívida de: "+getUltimaHospedagem().getDivida()+" reais\n---";
     }
     
-    //----------------------------------------------------------------
-    
-    public boolean pagarDivida(double valor) {
-    	if (getUltimaHospedagem().getDivida() > 0) {
-    		double valorDivida = getUltimaHospedagem().getDivida();
-    		if (valor == valorDivida) {
-    			getUltimaHospedagem().setDivida(valor - getUltimaHospedagem().getDivida());
-    			System.out.println("Dívida do hóspede "+this.getNome()+" do quarto "+getUltimaHospedagem().getQuarto().getNum()+" com valor de R$:"+getUltimaHospedagem().getDivida()+" paga com sucesso");
-    			return true;
-    		}
-    		 
-    	}
-    	else {
-    		System.out.println("Você não possui dívidas!");
-    		return false;
-    	}
-    	return true;
-    }
-    
-    public void consultarPendenciaFinanceira() {
-    	if (getUltimaHospedagem().getDivida() > 0) {
-    		System.out.println("O hóspede "+getNome()+ " de CPF = "+getCpf()+" possui dívida no valor de R$:"+getUltimaHospedagem().getDivida()+" devido à sua última hospedagem no quarto " +getUltimaHospedagem().getQuarto().getNum()+" do hotel "+getUltimaHospedagem().getHotel().getNome());
-    	}
-    	else {
-    		System.out.println("O hóspede "+getNome()+ " de CPF = "+getCpf()+" não possui dívida no hotel "+getUltimaHospedagem().getHotel().getNome());
-    	}
-    }
-
 }

@@ -1,21 +1,20 @@
 package app;
 
-import java.rmi.Naming;
-import java.rmi.Remote;
+import interfaces.HotelIF;
+
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.rmi.server.UnicastRemoteObject;
 
-import models.Hotel;
+import service.HotelService;
 
-public class Servidor extends UnicastRemoteObject {
+public class Servidor {
 	
 	public Servidor () throws RemoteException {
 		try {
-			LocateRegistry.createRegistry(Registry.REGISTRY_PORT);
-			Hotel hotel = new Hotel();
-			Naming.rebind("rmi://localhost:1099/HotelService", hotel);
+			Registry registry = LocateRegistry.createRegistry(Registry.REGISTRY_PORT);
+			HotelIF hotel = new HotelService("Tambau");
+			registry.rebind("rmi://localhost:1099/HotelService", hotel);
 			
 			System.out.println("---Servidor rodando---");
 		}

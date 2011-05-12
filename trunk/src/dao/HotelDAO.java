@@ -194,7 +194,7 @@ public class HotelDAO extends GenericDAO {
     					e.printStackTrace();
     				}    				
     				
-    				System.out.println("O quarto "+q.getNum()+" do hotel "+hotel.getNome()+" foi reservado com sucessp para o hÃ³spede "+hospedeEmQuestao.getNome()+" para o perÃ­odo de "+dataEntrada+ " a "+dataSaida);
+    				System.out.println("O quarto "+q.getNum()+" do hotel "+hotel.getNome()+" foi reservado com sucessp para o hospede "+hospedeEmQuestao.getNome()+" para o periodo de "+dataEntrada+ " a "+dataSaida);
     				return true;
     			}
     			else {
@@ -234,7 +234,7 @@ public class HotelDAO extends GenericDAO {
     		}
     	}
     	else {
-    		System.out.println("Voce nao possui duvidas!");
+    		System.out.println("Voce nao possui dividas!");
     		return false;
     	}
     	return true;
@@ -243,10 +243,10 @@ public class HotelDAO extends GenericDAO {
     public void consultarPendenciaFinanceiraHospede(String nomeHotel, String cpf) {
     	Hospede hospedeAux = getHospedeByCpf(nomeHotel, cpf);
     	if (hospedeAux.getUltimaHospedagem().getDivida() > 0) {
-    		System.out.println("O hospede "+hospedeAux.getNome()+ " de CPF = "+hospedeAux.getCpf()+" possui duvida no valor de R$:"+hospedeAux.getUltimaHospedagem().getDivida()+" devido a  sua ultima hospedagem no quarto " +hospedeAux.getUltimaHospedagem().getQuarto().getNum()+" do hotel "+nomeHotel);
+    		System.out.println("O hospede "+hospedeAux.getNome()+ " de CPF = "+hospedeAux.getCpf()+" possui dividas no valor de R$:"+hospedeAux.getUltimaHospedagem().getDivida()+" devido a sua ultima hospedagem no quarto " +hospedeAux.getUltimaHospedagem().getQuarto().getNum()+" do hotel "+nomeHotel);
     	}
     	else {
-    		System.out.println("O hospede "+hospedeAux.getNome()+ " de CPF = "+hospedeAux.getCpf()+" nao possui duvida no hotel "+ nomeHotel);
+    		System.out.println("O hospede "+hospedeAux.getNome()+ " de CPF = "+hospedeAux.getCpf()+" nao possui dividas no hotel "+ nomeHotel);
     	}
     }
     

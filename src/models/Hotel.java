@@ -23,7 +23,6 @@ public class Hotel implements Serializable {
     private String endereco;
     private String nomeGerente;
     private List<Quarto> quartos;
-    private List<Reserva> reservas;
     private List<Hospede> hospedesCadastrados;
 
     public Hotel() {
@@ -63,14 +62,6 @@ public class Hotel implements Serializable {
         this.quartos = quartos;
     }
     
-    public void setReservas(List<Reserva> reservas) {
-		this.reservas = reservas;
-	}
-
-	public List<Reserva> getReservas() {
-		return reservas;
-	}
-
 	public void setHospedesCadastrados(List<Hospede> hospedesCadastrados) {
 		this.hospedesCadastrados = hospedesCadastrados;
 	}
@@ -78,7 +69,54 @@ public class Hotel implements Serializable {
 	public List<Hospede> getHospedesCadastrados() {
 		return hospedesCadastrados;
 	}
+	
+	public int getNumQuartosOcupados() {
+		int cont = 0;
+		for (Quarto q : quartos) {
+			if (q.isOcupado() == true) {
+				cont++;
+			}
+		}
+		return cont;
+	}
+	
+	public int getNumQuartosLivres() {
+		int cont = 0;
+		for (Quarto q : quartos) {
+			if (q.isOcupado() == false) {
+				cont++;
+			}
+		}
+		return cont;
+	}
 
+	public Hospede getHospedePorCpf(String cpf) {
+		for (Hospede h : hospedesCadastrados) {
+			if (h.getCpf().equals(cpf)) {
+				return h;
+			}
+		}
+		return null;
+	}
+	
+    @Override
+    public String toString() {
+    	String impressora = "";
+    	int contador = 1;
+    	impressora = "Nome: "+ getNome() + "\nEndereço: "+ getEndereco() + "\nQuantidade de quartos: "+quartos.size()+
+    					"\nQuartos livres: "+getNumQuartosLivres()+"\nQuartos ocupados: "+getNumQuartosOcupados()+"\nHóspedes cadastrados: "+
+    					hospedesCadastrados.size()+"\nLista de hóspedes:";
+    	for (Hospede h : hospedesCadastrados) {
+    		impressora += "\n"+String.valueOf(contador) + ".\n";
+    		impressora += h.toString();
+    		contador += 1;
+    	}
+    	impressora += "\n\n---";
+    	return impressora;
+    }
+    
+    // MÉTODOS DE GERENCIAMENTO DO HOTEL
+    
 	public void addQuarto(Quarto q) {
         this.quartos.add(q);
     }
@@ -90,22 +128,6 @@ public class Hotel implements Serializable {
             }
         }
     }
-    
-    @Override
-    public String toString() {
-    	String impressora = "";
-    	int contador = 1;
-    	impressora = "Nome: "+ getNome() + "\nEndereço: "+ getEndereco() + "\nHóspedes cadastrados: "+hospedesCadastrados.size()+"\nLista de hóspedes:";
-    	for (Hospede h : hospedesCadastrados) {
-    		impressora += "\n"+String.valueOf(contador) + ".\n";
-    		impressora += h.toString();
-    		contador += 1;
-    	}
-    	impressora += "\n\n---";
-    	return impressora;
-    }
-    
-    // MÉTODOS DE GERENCIAMENTO DO HOTEL
     
     public void cadastrarCliente(String nome, String cpf, String email, String telefone) throws Exception {
     	for (Hospede h : hospedesCadastrados) {
@@ -142,6 +164,28 @@ public class Hotel implements Serializable {
     					Calendar entradaCalendar = new GregorianCalendar();
     					entradaCalendar.setTime(formatador.parse(dataSaida));    						
 
+    					if (q.getReservas().size() == 0) {
+    						Calendar hoje = new GregorianCalendar(); //pegando a data atual
+
+							Reserva novaReserva = new Reserva();
+							novaReserva.setDataPedido(hoje);
+							novaReserva.setDataEntrada(entradaCalendar);
+							novaReserva.setDataSaida(saidaCalendar);   		
+							
+							for (Hospede h : hospedesCadastrados) {
+		    					if (h.getCpf().equals(cpf)) {
+		    						hospedeEmQuestao = h;
+		    						if (h.getUltimaHospedagem().getDivida() == 0) {
+		    							novaReserva.setHospede(h);
+		    						}
+		    						else {
+		    							System.out.println("ERRO: não é possível realizar reserva pois o hóspede "+h.getNome()+"possui pendência financeiras relativas à sua última hospedagem");
+		    							return false;
+		    						}
+		    					}
+		    				}
+    					}
+    					
     					for (Reserva r : q.getReservas()) {
     						if (r.getDataSaida().before(saidaCalendar)) { //se a data 
     							Calendar hoje = new GregorianCalendar(); //pegando a data atual
@@ -186,4 +230,16 @@ public class Hotel implements Serializable {
     	return true;
     }
     
+    public void alocarHospedeAQuarto(int num, String cpf) {
+    	Quarto quartoAux = null;
+    	Hospede hospedeAux = getHospedePorCpf(cpf);
+    	for (Quarto q : quartos) {
+    		if (q.getNum() == num) {
+    			q.setHospede(hospedeAux);
+    			q.setOcupado(true);
+    			quartoAux = q;
+    		}
+    	}
+    	System.out.println("Hóspede "+hospedeAux.getNome()+" alocado ao quarto "+quartoAux.getNum()+" com sucesso");
+    }
 }

@@ -14,9 +14,15 @@ import java.util.*;
 public class Quarto implements Serializable {
     private int num;
     private boolean ocupado;
+    private Hospede hospede;
     private List<Reserva> reservas;
 
-    public Quarto() {}
+    public Quarto(int num) {
+    	this.num = num;
+    	hospede = new Hospede();
+    	ocupado = false;
+    	reservas = new ArrayList<Reserva>();
+    }
 
     public int getNum() {
         return num;
@@ -33,6 +39,14 @@ public class Quarto implements Serializable {
     public void setOcupado(boolean ocupado) {
         this.ocupado = ocupado;
     }
+
+	public void setHospede(Hospede hospede) {
+		this.hospede = hospede;
+	}
+
+	public Hospede getHospede() {
+		return hospede;
+	}
 
 	public void setReservas(List<Reserva> reserva) {
 		this.reservas = reserva;

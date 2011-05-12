@@ -4,10 +4,18 @@
  */
 package dao;
 
-import java.io.*;
-import java.util.*;
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
+import models.Hotel;
 import exceptions.DuplicatedEntityException;
 import exceptions.InexistentEntityException;
 
@@ -17,7 +25,7 @@ import exceptions.InexistentEntityException;
  */
 public class GenericDAO {
 
-    protected File arquivo;
+    protected static File arquivo;
     //escrita
     protected FileOutputStream os;
     protected ObjectOutputStream oos;
@@ -26,13 +34,13 @@ public class GenericDAO {
     protected FileReader reader;
     protected BufferedReader leitorBuffer;
     protected ObjectInputStream ios;
-    protected HashMap<String, ArrayList<Object>> banco;
+    protected static HashMap<String, ArrayList<Object>> banco;
     private String nomeBanco;
 
     public GenericDAO(String nomeBanco) throws Exception {
         if (new File(nomeBanco).exists()) {
             arquivo = new File(nomeBanco).getAbsoluteFile();
-            System.out.println("Ja existia");
+//            System.out.println("Ja existia");
             is = new FileInputStream(arquivo);
             ios = new ObjectInputStream(is);
             banco = (HashMap<String, ArrayList<Object>>)ios.readObject();
@@ -40,12 +48,12 @@ public class GenericDAO {
             is.close();
         } else {
             arquivo = new File(nomeBanco);
-            System.out.println("NOVO");
+//            System.out.println("NOVO");
             os = new FileOutputStream(arquivo);
             oos = new ObjectOutputStream(os);
             banco = new HashMap<String, ArrayList<Object>>();
             oos.writeObject(banco);
-            System.out.println("escreveu");
+//            System.out.println("escreveu");
             oos.close();
             os.close();
         }
@@ -119,20 +127,26 @@ public class GenericDAO {
         throw new InexistentEntityException();
     }
 
-    public boolean insert(String entityName, Object value) throws InexistentEntityException {
+    public boolean insertObject(String entityName, Object value) throws InexistentEntityException {
     	if(banco.containsKey(entityName)) {
     		banco.get(entityName).add(value);
     		return true;
     	}
-//        for (Map.Entry<String, ArrayList<Object>> entrada : banco.entrySet()) {
-//            if (entrada.getKey().equals(entityName)) {
-//                entrada.getValue().add(value);
-//                return;
-//            }
-//        }
         throw new InexistentEntityException();
     }
-
+    
+    public void removeHotel(String HotelName) {
+    	if(banco.containsKey("Hotel")) {
+	    	for (int i=0; i<banco.get("Hotel").size(); i++) {
+	    		Hotel hotelAux = (Hotel) banco.get("Hotel").get(i); 
+	    		if (hotelAux.getNome().equals(HotelName)) {
+//	    			System.out.println(banco.get("Hotel").get(i).toString());
+	    			banco.get("Hotel").remove(i);
+	    		}
+	    	}
+    	}
+    }
+    
     public void printDb() throws Exception {
         try {
 //            HashMap<String, ArrayList> b = (HashMap<String, ArrayList>) ios.readObject();

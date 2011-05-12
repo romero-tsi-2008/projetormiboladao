@@ -4,16 +4,15 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollBar;
+import javax.swing.JList;
+import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-import javax.swing.border.LineBorder;
 
-import org.dyno.visual.swing.layouts.Bilateral;
 import org.dyno.visual.swing.layouts.Constraints;
 import org.dyno.visual.swing.layouts.GroupLayout;
 import org.dyno.visual.swing.layouts.Leading;
@@ -23,27 +22,51 @@ public class TelaListagemHospedes extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JLabel jLabel0;
-	private JScrollBar jScrollBar0;
-	private JPanel jPanel0;
 	private JButton jButton0;
 	private JButton jButton1;
 	private JButton jButton2;
 	private JButton jButton3;
+	private JList jList0;
+	private DefaultListModel listModel;
+	private JScrollPane jScrollPane0;
 	private static final String PREFERRED_LOOK_AND_FEEL = "javax.swing.plaf.metal.MetalLookAndFeel";
 	public TelaListagemHospedes() {
 		initComponents();
 	}
 
 	private void initComponents() {
-		setUndecorated(true);
 		setLayout(new GroupLayout());
-		add(getJPanel0(), new Constraints(new Leading(16, 468, 12, 12), new Leading(46, 220, 10, 10)));
 		add(getJButton2(), new Constraints(new Leading(16, 12, 12), new Leading(12, 12, 12)));
 		add(getJLabel0(), new Constraints(new Leading(188, 10, 10), new Leading(14, 10, 10)));
 		add(getJButton1(), new Constraints(new Leading(311, 150, 10, 10), new Leading(286, 10, 10)));
 		add(getJButton0(), new Constraints(new Leading(133, 10, 10), new Leading(286, 12, 12)));
 		add(getJButton3(), new Constraints(new Leading(16, 12, 12), new Leading(286, 12, 12)));
+		add(getJScrollPane0(), new Constraints(new Leading(21, 470, 10, 10), new Leading(58, 199, 10, 10)));
 		setSize(510, 329);
+	}
+
+	private JScrollPane getJScrollPane0() {
+		if (jScrollPane0 == null) {
+			jScrollPane0 = new JScrollPane();
+			jScrollPane0.setViewportView(getJList0());
+		}
+		return jScrollPane0;
+	}
+
+	private JList getJList0() {
+		if (jList0 == null) {
+			jList0 = new JList();
+			listModel = new DefaultListModel();
+			listModel.addElement("item0");
+			listModel.addElement("item1");
+			listModel.addElement("item2");
+			listModel.addElement("item3");
+			listModel.addElement("item4");
+			listModel.addElement("item5");
+			listModel.addElement("item6");
+			jList0.setModel(listModel);
+		}
+		return jList0;
 	}
 
 	private JButton getJButton3() {
@@ -87,25 +110,14 @@ public class TelaListagemHospedes extends JFrame {
 		if (jButton0 == null) {
 			jButton0 = new JButton();
 			jButton0.setText("Apagar selecionado");
+			jButton0.addActionListener(new ActionListener() {
+	
+				public void actionPerformed(ActionEvent event) {
+					jButton0ActionActionPerformed(event);
+				}
+			});
 		}
 		return jButton0;
-	}
-
-	private JPanel getJPanel0() {
-		if (jPanel0 == null) {
-			jPanel0 = new JPanel();
-			jPanel0.setBorder(new LineBorder(Color.black, 1, false));
-			jPanel0.setLayout(new GroupLayout());
-			jPanel0.add(getJScrollBar0(), new Constraints(new Leading(444, 22, 10, 10), new Bilateral(0, 0, 5)));
-		}
-		return jPanel0;
-	}
-
-	private JScrollBar getJScrollBar0() {
-		if (jScrollBar0 == null) {
-			jScrollBar0 = new JScrollBar();
-		}
-		return jScrollBar0;
 	}
 
 	private JLabel getJLabel0() {
@@ -155,8 +167,19 @@ public class TelaListagemHospedes extends JFrame {
 	}
 
 	private void jButton2ActionActionPerformed(ActionEvent event) {
+		this.dispose();
 		TelaCadastroHospede telaCadastroHospede = new TelaCadastroHospede();
 		telaCadastroHospede.setVisible(true);
+	}
+
+	private void jButton0ActionActionPerformed(ActionEvent event) {
+		TesteGetIndex x = new TesteGetIndex();
+		int i = jList0.getSelectedIndex();
+		if(i>=0){
+			x.getJLabel0().setText(listModel.get(i).toString());
+			x.setVisible(true);
+			
+		}
 	}
 
 }

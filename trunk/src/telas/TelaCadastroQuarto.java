@@ -33,7 +33,7 @@ public class TelaCadastroQuarto extends JFrame {
 	}
 
 	private void initComponents() {
-		setUndecorated(true);
+//		setUndecorated(true);
 		setLayout(new GroupLayout());
 		add(getJLabel1(), new Constraints(new Leading(48, 10, 10), new Leading(59, 10, 10)));
 		add(getJLabel0(), new Constraints(new Leading(156, 12, 12), new Leading(14, 25, 12, 12)));
@@ -143,6 +143,8 @@ public class TelaCadastroQuarto extends JFrame {
 	}
 
 	private void jButton0ActionActionPerformed(ActionEvent event) {
+		TelaListagemQuartos tela = new TelaListagemQuartos();
+		tela.setVisible(true);
 		this.dispose();
 	}
 

@@ -64,6 +64,12 @@ public class TelaPrincipal extends JFrame {
 		if (jMenuItem7 == null) {
 			jMenuItem7 = new JMenuItem();
 			jMenuItem7.setText("Reservar quarto");
+			jMenuItem7.addActionListener(new ActionListener() {
+	
+				public void actionPerformed(ActionEvent event) {
+					jMenuItem7ActionActionPerformed(event);
+				}
+			});
 		}
 		return jMenuItem7;
 	}
@@ -221,6 +227,11 @@ public class TelaPrincipal extends JFrame {
 	private void jMenuItem0ActionActionPerformed(ActionEvent event) {
 		TelaCadastroHotel telaCadastroHotel = new TelaCadastroHotel();
 		telaCadastroHotel.setVisible(true);
+	}
+
+	private void jMenuItem7ActionActionPerformed(ActionEvent event) {
+		TelaReserva telaReserva = new TelaReserva();
+		telaReserva.setVisible(true);
 	}
 
 }

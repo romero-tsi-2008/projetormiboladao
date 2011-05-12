@@ -106,10 +106,13 @@ public class HotelDAO extends GenericDAO {
     
     public boolean cadastrarCliente(String nomeHotel, String nome, String cpf, String email, String telefone) {
     	Hotel hotel = getHotelByName(nomeHotel);
-    	for (Hospede h : hotel.getHospedesCadastrados()) {
-    		if (h.getCpf().equals(cpf)) {
-    			System.out.println("ERRO: o hÃ³spede "+h.getNome()+" jÃ¡ se encontra cadastrado em no hotel "+hotel.getNome()+"!");
-    			return false;
+    	
+    	if (hotel.getHospedesCadastrados().size() > 0) {
+    		for (Hospede h : hotel.getHospedesCadastrados()) {
+    			if (h.getCpf().equals(cpf)) {
+    				System.out.println("ERRO: o hospede "+h.getNome()+" ja se encontra cadastrado em no hotel "+hotel.getNome()+"!");
+    				return false;
+    			}
     		}
     	}
     	
@@ -240,10 +243,10 @@ public class HotelDAO extends GenericDAO {
     public void consultarPendenciaFinanceiraHospede(String nomeHotel, String cpf) {
     	Hospede hospedeAux = getHospedeByCpf(nomeHotel, cpf);
     	if (hospedeAux.getUltimaHospedagem().getDivida() > 0) {
-    		System.out.println("O hospede "+hospedeAux.getNome()+ " de CPF = "+hospedeAux.getCpf()+" possui duvida no valor de R$:"+hospedeAux.getUltimaHospedagem().getDivida()+" devido a  sua ultima hospedagem no quarto " +hospedeAux.getUltimaHospedagem().getQuarto().getNum()+" do hotel "+hospedeAux.getUltimaHospedagem().getHotel().getNome());
+    		System.out.println("O hospede "+hospedeAux.getNome()+ " de CPF = "+hospedeAux.getCpf()+" possui duvida no valor de R$:"+hospedeAux.getUltimaHospedagem().getDivida()+" devido a  sua ultima hospedagem no quarto " +hospedeAux.getUltimaHospedagem().getQuarto().getNum()+" do hotel "+nomeHotel);
     	}
     	else {
-    		System.out.println("O hospede "+hospedeAux.getNome()+ " de CPF = "+hospedeAux.getCpf()+" nao possui duvida no hotel "+hospedeAux.getUltimaHospedagem().getHotel().getNome());
+    		System.out.println("O hospede "+hospedeAux.getNome()+ " de CPF = "+hospedeAux.getCpf()+" nao possui duvida no hotel "+ nomeHotel);
     	}
     }
     

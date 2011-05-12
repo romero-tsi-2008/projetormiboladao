@@ -199,7 +199,7 @@ public class HotelDAO extends GenericDAO {
     	Quarto quartoAux = null;
     	Hospede hospedeAux = getHospedeByCpf(nomeHotel, cpf);
     	for (Quarto q : hotel.getQuartos()) {
-    		if (q.getNum() == num) {
+    		if (q.getNum() == num && !q.isOcupado()) {
     			q.setHospede(hospedeAux);
     			q.setOcupado(true);
     			quartoAux = q;

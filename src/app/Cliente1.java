@@ -57,6 +57,15 @@ public class Cliente1 {
 	    	
 	    	hotelDao.insertObject("HOTEL", h1);
 	    	hotelDao.insertObject("HOTEL", h2);
+
+	    	hotelDao.alocarHospedeQuarto("Hotel Teste", 10, "08557792417");
+	    	hotelDao.alocarHospedeQuarto("Hotel Teste", 30, "1234567890");
+	    	
+	    	hotelDao.consultarPendenciaFinanceiraHospede("Hotel Teste", "08557792417");
+	    	
+	    	hotelDao.listarHoteis();
+	    	
+	    	hotelDao.reservarQuarto("Hotel Teste", 20, "1234567890", "10/06/2011", "11/06/2011");
 	    	
 	    	hotelDao.commit();
 	    	hotelDao.printDb();

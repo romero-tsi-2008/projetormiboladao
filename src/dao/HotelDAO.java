@@ -23,7 +23,6 @@ public class HotelDAO extends GenericDAO {
 	public Hotel getHotelByName(String name) {
 		ArrayList<Object> hoteis;
         for (String s : banco.keySet()) {
-//		for (Entry<String, ArrayList<Object>> entrada : banco.entrySet()) {
             if (s.equals("HOTEL")) {
             	hoteis = banco.get(s);
             	Iterator it = hoteis.iterator();
@@ -78,6 +77,16 @@ public class HotelDAO extends GenericDAO {
 		return impressora;
 	}
 	
+	public Quarto getQuartoByNum(String nomeHotel, int num) {
+		Hotel hotelAux = getHotelByName(nomeHotel);
+        for (Quarto q : hotelAux.getQuartos()) {
+        	if (q.getNum() == num) {
+        		return q;
+        	}
+        }
+        return null;
+	}
+		
 	public boolean addQuarto(String nomeHotel, Quarto q) {
 		Hotel hotel = getHotelByName(nomeHotel);
         hotel.getQuartos().add(q);
@@ -196,14 +205,14 @@ public class HotelDAO extends GenericDAO {
     
     public boolean alocarHospedeQuarto(String nomeHotel, int num, String cpf) {
     	Hotel hotel = getHotelByName(nomeHotel);
-    	Quarto quartoAux = null;
+    	Quarto quartoAux = getQuartoByNum(nomeHotel, num);
     	Hospede hospedeAux = getHospedeByCpf(nomeHotel, cpf);
     	for (Quarto q : hotel.getQuartos()) {
     		if (q.getNum() == num && !q.isOcupado()) {
     			q.setHospede(hospedeAux);
     			q.setOcupado(true);
     			quartoAux = q;
-    			System.out.println("Hóspede "+hospedeAux.getNome()+" alocado ao quarto "+quartoAux.getNum()+" com sucesso");
+    			System.out.println("Hospede "+hospedeAux.getNome()+" alocado ao quarto "+quartoAux.getNum()+" com sucesso");
     			return true;
     		}
     	}
@@ -222,7 +231,7 @@ public class HotelDAO extends GenericDAO {
     		}
     	}
     	else {
-    		System.out.println("Você não possui dívidas!");
+    		System.out.println("Voce nao possui duvidas!");
     		return false;
     	}
     	return true;
@@ -231,10 +240,10 @@ public class HotelDAO extends GenericDAO {
     public void consultarPendenciaFinanceiraHospede(String nomeHotel, String cpf) {
     	Hospede hospedeAux = getHospedeByCpf(nomeHotel, cpf);
     	if (hospedeAux.getUltimaHospedagem().getDivida() > 0) {
-    		System.out.println("O hóspede "+hospedeAux.getNome()+ " de CPF = "+hospedeAux.getCpf()+" possui dívida no valor de R$:"+hospedeAux.getUltimaHospedagem().getDivida()+" devido à sua última hospedagem no quarto " +hospedeAux.getUltimaHospedagem().getQuarto().getNum()+" do hotel "+hospedeAux.getUltimaHospedagem().getHotel().getNome());
+    		System.out.println("O hospede "+hospedeAux.getNome()+ " de CPF = "+hospedeAux.getCpf()+" possui duvida no valor de R$:"+hospedeAux.getUltimaHospedagem().getDivida()+" devido a� sua ultima hospedagem no quarto " +hospedeAux.getUltimaHospedagem().getQuarto().getNum()+" do hotel "+hospedeAux.getUltimaHospedagem().getHotel().getNome());
     	}
     	else {
-    		System.out.println("O hóspede "+hospedeAux.getNome()+ " de CPF = "+hospedeAux.getCpf()+" não possui dívida no hotel "+hospedeAux.getUltimaHospedagem().getHotel().getNome());
+    		System.out.println("O hospede "+hospedeAux.getNome()+ " de CPF = "+hospedeAux.getCpf()+" nao possui duvida no hotel "+hospedeAux.getUltimaHospedagem().getHotel().getNome());
     	}
     }
     

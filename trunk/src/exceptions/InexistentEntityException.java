@@ -11,6 +11,6 @@ package exceptions;
  */
 public class InexistentEntityException extends Exception {
     public InexistentEntityException() {
-        super("ERRO: A entidade que você está tentando remover não existe.");
+        super("ERRO: A entidade que voce esta tentando alterar nao existe.");
     }
 }

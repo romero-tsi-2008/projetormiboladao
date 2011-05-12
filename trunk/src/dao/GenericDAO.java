@@ -67,24 +67,7 @@ public class GenericDAO {
 
     private HashMap<String, ArrayList<Object>> getBanco() {
         try{
-//            if(banco == null) {
-//                if(new File(nomeBanco).exists()) {
-//                    FileInputStream file = new FileInputStream(nomeBanco);
-//                    ObjectInputStream ob = new ObjectInputStream(file);
-//                    banco = (HashMap<String, ArrayList<Object>>) ob.readObject();
-//                    ob.close();
-//                    file.close();
-//                } else {
-//                    FileOutputStream file = new FileOutputStream(nomeBanco);
-//                    ObjectOutput ob = new ObjectOutputStream(file);
-//                    banco = new HashMap<String, ArrayList<Object>>();
-//                    ob.writeObject(banco);
-//                    ob.close();
-//                    file.close();
-//                }
-//            }
             return banco;
-
         } catch(Exception e) {
             e.printStackTrace();
             return null;

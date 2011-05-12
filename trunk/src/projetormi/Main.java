@@ -25,9 +25,15 @@ public class Main {
         Hotel hotel1 = new Hotel();
         hotel1.setNome("HOTEL 1");
 
-        Quarto quarto1 = new Quarto();
-        quarto1.setNum(1);        
+        Quarto quarto1 = new Quarto(1);
         hotel1.addQuarto(quarto1);
+        
+        Quarto quarto2 = new Quarto(2);
+        hotel1.addQuarto(quarto2);
+        
+        Quarto quarto3 = new Quarto(3);
+        hotel1.addQuarto(quarto3);
+        
         hotel1.cadastrarCliente("Ryu", "120938578329", "ryu@haduuken.com", "1111-2424");
         hotel1.cadastrarCliente("Ken", "012345678901", "ken@haduken.com", "2424-6969");
         
@@ -37,15 +43,17 @@ public class Main {
         
         dao.insertObject("Hotel", hotel1);
         
+        hotel1.reservarQuarto(1, "120938578329", "14/05/2011", "15/05/2011");
+        hotel1.alocarHospedeAQuarto(1, "120938578329");
+        
         dao.commit();       
         dao.close();
         
         Hotel hotel2 = new Hotel();
         hotel2.setNome("HOTEL 2");
 
-        Quarto quarto2 = new Quarto();
-        quarto2.setNum(2);
-        hotel2.addQuarto(quarto2);
+        quarto1 = new Quarto(1);
+        hotel2.addQuarto(quarto1);
         
         dao.begin();
         

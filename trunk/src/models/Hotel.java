@@ -242,4 +242,8 @@ public class Hotel extends UnicastRemoteObject implements Serializable {
     	}
     	System.out.println("Hóspede "+hospedeAux.getNome()+" alocado ao quarto "+quartoAux.getNum()+" com sucesso");
     }
+    
+    public void testar() {
+    	System.out.println("---TESTANDO---");
+    }
 }

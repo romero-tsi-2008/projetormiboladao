@@ -155,7 +155,7 @@ public class HotelDAO extends GenericDAO {
 		    							novaReserva.setHospede(h);
 		    						}
 		    						else {
-		    							System.out.println("ERRO: não é possível realizar reserva pois o hóspede "+h.getNome()+"possui pendência financeiras relativas à sua última hospedagem");
+		    							System.out.println("ERRO: nao eh possivel realizar reserva pois o hospede "+h.getNome()+"possui pendencia financeiras relativas a�sua ultima hospedagem");
 		    							return false;
 		    						}
 		    					}
@@ -178,14 +178,14 @@ public class HotelDAO extends GenericDAO {
     		    							novaReserva.setHospede(h);
     		    						}
     		    						else {
-    		    							System.out.println("ERRO: não é possível realizar reserva pois o hóspede "+h.getNome()+"possui pendência financeiras relativas à sua última hospedagem");
+    		    							System.out.println("ERRO: nao eh possivel realizar reserva pois o hopede "+h.getNome()+"possui pendencia financeiras relativas a sua ultima hospedagem");
     		    							return false;
     		    						}
     		    					}
     		    				}
     						}
     						else {
-    							System.out.println("Desculpe, não é possível reservar o quarto "+q.getNum()+" do hotel "+hotel.getNome()+" no período requisitado");
+    							System.out.println("Desculpe, nao eh possivel reservar o quarto "+q.getNum()+" do hotel "+hotel.getNome()+" no periodo requisitado");
     							return false;
     						}
     					}
@@ -198,7 +198,7 @@ public class HotelDAO extends GenericDAO {
     				return true;
     			}
     			else {
-    				System.out.println("Desculpe, o quarto está ocupado e não pode ser reservado");
+    				System.out.println("Desculpe, o quarto estao ocupado e nao pode ser reservado");
     				return false;
     			}
     		}
@@ -229,7 +229,7 @@ public class HotelDAO extends GenericDAO {
     		double valorDivida = hospedeAux.getUltimaHospedagem().getDivida();
     		if (valor == valorDivida) {
     			hospedeAux.getUltimaHospedagem().setDivida(valor - hospedeAux.getUltimaHospedagem().getDivida());
-    			System.out.println("Dívida do hóspede "+ hospedeAux.getNome()+" do quarto "+ hospedeAux.getUltimaHospedagem().getQuarto().getNum()+ " com valor de R$:"+ hospedeAux.getUltimaHospedagem().getDivida()+ " paga com sucesso");
+    			System.out.println("Divida do hospede "+ hospedeAux.getNome()+" do quarto "+ hospedeAux.getUltimaHospedagem().getQuarto().getNum()+ " com valor de R$:"+ hospedeAux.getUltimaHospedagem().getDivida()+ " paga com sucesso");
     			return true;
     		}
     	}

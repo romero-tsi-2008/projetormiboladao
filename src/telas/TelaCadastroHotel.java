@@ -1,11 +1,17 @@
 package telas;
 
+import interfaces.HotelIF;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -80,6 +86,23 @@ public class TelaCadastroHotel extends JFrame {
 		if (jButton1 == null) {
 			jButton1 = new JButton();
 			jButton1.setText("CADASTRAR");
+			jButton1.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					// TODO Auto-generated method stub
+					try {
+						Registry registry = LocateRegistry.getRegistry(1099);
+						HotelIF servico = (HotelIF) registry.lookup("HotelService");
+						String retorno = "";//servico.cadastrarHotel(jTextField0.getText(), jTextField1.getText());
+						//JOptionPane.showMessageDialog(this, retorno, "Mensagem", JOptionPane.INFORMATION_MESSAGE);
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+				}
+			});
 		}
 		return jButton1;
 	}
@@ -101,7 +124,7 @@ public class TelaCadastroHotel extends JFrame {
 	private JLabel getJLabel3() {
 		if (jLabel3 == null) {
 			jLabel3 = new JLabel();
-			jLabel3.setText("Endereço:");
+			jLabel3.setText("Endereï¿½o:");
 		}
 		return jLabel3;
 	}

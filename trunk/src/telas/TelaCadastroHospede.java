@@ -2,10 +2,13 @@ package telas;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -13,6 +16,8 @@ import javax.swing.UIManager;
 import org.dyno.visual.swing.layouts.Constraints;
 import org.dyno.visual.swing.layouts.GroupLayout;
 import org.dyno.visual.swing.layouts.Leading;
+
+import util.Servico;
 
 //VS4E -- DO NOT REMOVE THIS LINE!
 public class TelaCadastroHospede extends JFrame {
@@ -36,7 +41,7 @@ public class TelaCadastroHospede extends JFrame {
 		initComponents();
 	}
 
-	private void initComponents() {
+	private void () {
 //		setUndecorated(true);
 		setLayout(new GroupLayout());
 		add(getJLabel1(), new Constraints(new Leading(61, 12, 12), new Leading(59, 12, 12)));
@@ -67,6 +72,19 @@ public class TelaCadastroHospede extends JFrame {
 		if (jButton1 == null) {
 			jButton1 = new JButton();
 			jButton1.setText("CADASTRAR");
+			jButton1.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					// TODO Auto-generated method stub
+					try {
+//						String retorno = Servico.getServico().cadastrarHospede(jTextField5.getText(), jTextField4.getText(), cpf, email, telefone);
+					}
+					catch(Exception e) {
+						e.printStackTrace();
+					}
+				}
+			});
 			
 		}
 		return jButton1;

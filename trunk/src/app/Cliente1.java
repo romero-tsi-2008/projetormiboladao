@@ -35,8 +35,8 @@ public class Cliente1 {
 	    	
 	    	System.out.println(Servico.getServico().printDB());
 	    	
-	    	System.out.println(Servico.getServico().cadastrarHospede("Hotel Teste", "Zekinha", "12312312312", "zeca@a.com.br", "2222-2222"));
-	    	System.out.println(Servico.getServico().cadastrarHospede("Hotel Teste", "Robervalda", "14512312312", "maria@a.com.br", "2222-99999"));
+	    	System.out.println(Servico.getServico().cadastrarHospede("Hotel Teste", "Zekinha", "12312312312", "zeca@a.com.br", "2222-2222","Rua xxx"));
+	    	System.out.println(Servico.getServico().cadastrarHospede("Hotel Teste", "Robervalda", "14512312312", "maria@a.com.br", "2222-99999","Rua yyy"));
 	    	
 	    	System.out.println(Servico.getServico().alocarHospedeQuarto("Hotel Teste", 1, "12312312312", "15/05/2011"));
 	    	System.out.println(Servico.getServico().alocarHospedeQuarto("Hotel Teste", 2, "14512312312", "15/05/2011"));

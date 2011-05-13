@@ -3,6 +3,7 @@ package telas;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -10,24 +11,31 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+
+import models.Quarto;
 
 import org.dyno.visual.swing.layouts.Constraints;
 import org.dyno.visual.swing.layouts.GroupLayout;
 import org.dyno.visual.swing.layouts.Leading;
+
+import util.Servico;
 
 //VS4E -- DO NOT REMOVE THIS LINE!
 public class TelaListagemQuartos extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JLabel jLabel0;
-	private JButton jButton0;
-	private JButton jButton1;
 	private JButton jButton2;
 	private JButton jButton3;
 	private JList jList0;
 	private JScrollPane jScrollPane0;
+	private JLabel jLabel1;
+	private JTextField jTextField0;
+	private JButton jButton4;
+	private DefaultListModel listModel;
 	private static final String PREFERRED_LOOK_AND_FEEL = "javax.swing.plaf.metal.MetalLookAndFeel";
 	public TelaListagemQuartos() {
 		initComponents();
@@ -37,11 +45,41 @@ public class TelaListagemQuartos extends JFrame {
 		setLayout(new GroupLayout());
 		add(getJButton2(), new Constraints(new Leading(16, 12, 12), new Leading(12, 12, 12)));
 		add(getJLabel0(), new Constraints(new Leading(188, 10, 10), new Leading(14, 10, 10)));
-		add(getJButton1(), new Constraints(new Leading(311, 150, 10, 10), new Leading(286, 10, 10)));
-		add(getJButton0(), new Constraints(new Leading(133, 10, 10), new Leading(286, 12, 12)));
 		add(getJButton3(), new Constraints(new Leading(16, 12, 12), new Leading(286, 12, 12)));
-		add(getJScrollPane0(), new Constraints(new Leading(17, 441, 10, 10), new Leading(64, 203, 10, 10)));
+		add(getJScrollPane0(), new Constraints(new Leading(17, 441, 10, 10), new Leading(89, 178, 10, 10)));
+		add(getJLabel1(), new Constraints(new Leading(25, 10, 10), new Leading(65, 10, 10)));
+		add(getJTextField0(), new Constraints(new Leading(165, 205, 12, 12), new Leading(63, 12, 12)));
+		add(getJButton4(), new Constraints(new Leading(376, 12, 12), new Leading(57, 12, 12)));
 		setSize(491, 329);
+	}
+
+	private JButton getJButton4() {
+		if (jButton4 == null) {
+			jButton4 = new JButton();
+			jButton4.setText("Buscar");
+			jButton4.addActionListener(new ActionListener() {
+	
+				public void actionPerformed(ActionEvent event) {
+					jButton4ActionActionPerformed(event);
+				}
+			});
+		}
+		return jButton4;
+	}
+
+	private JTextField getJTextField0() {
+		if (jTextField0 == null) {
+			jTextField0 = new JTextField();
+		}
+		return jTextField0;
+	}
+
+	private JLabel getJLabel1() {
+		if (jLabel1 == null) {
+			jLabel1 = new JLabel();
+			jLabel1.setText("Listar quartos do hotel:");
+		}
+		return jLabel1;
 	}
 
 	private JScrollPane getJScrollPane0() {
@@ -55,12 +93,12 @@ public class TelaListagemQuartos extends JFrame {
 	private JList getJList0() {
 		if (jList0 == null) {
 			jList0 = new JList();
-			DefaultListModel listModel = new DefaultListModel();
-			listModel.addElement("item0");
-			listModel.addElement("item1");
-			listModel.addElement("item2");
-			listModel.addElement("item3");
-			jList0.setModel(listModel);
+//			DefaultListModel listModel = new DefaultListModel();
+//			listModel.addElement("item0");
+//			listModel.addElement("item1");
+//			listModel.addElement("item2");
+//			listModel.addElement("item3");
+//			jList0.setModel(listModel);
 		}
 		return jList0;
 	}
@@ -92,22 +130,6 @@ public class TelaListagemQuartos extends JFrame {
 			});
 		}
 		return jButton2;
-	}
-
-	private JButton getJButton1() {
-		if (jButton1 == null) {
-			jButton1 = new JButton();
-			jButton1.setText("Editar selecionado");
-		}
-		return jButton1;
-	}
-
-	private JButton getJButton0() {
-		if (jButton0 == null) {
-			jButton0 = new JButton();
-			jButton0.setText("Apagar selecionado");
-		}
-		return jButton0;
 	}
 
 	private JLabel getJLabel0() {
@@ -160,6 +182,19 @@ public class TelaListagemQuartos extends JFrame {
 		this.dispose();
 		TelaCadastroQuarto telaCadastroQuarto = new TelaCadastroQuarto();
 		telaCadastroQuarto.setVisible(true);
+	}
+
+	private void jButton4ActionActionPerformed(ActionEvent event) {
+		String hotel = jTextField0.getText();
+		listModel = new DefaultListModel();
+		try{
+			ArrayList<Quarto> quartos = (ArrayList<Quarto>) Servico.getServico().pegarQuartos(hotel);
+			for(Quarto q: quartos){
+				listModel.addElement(q.getNum());
+			}
+			jList0.setModel(listModel);
+		}catch(Exception e){}
+		
 	}
 
 }

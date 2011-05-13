@@ -41,7 +41,7 @@ public class GenericDAO {
             arquivo = new File(nomeBanco).getAbsoluteFile();
             is = new FileInputStream(arquivo);
             ios = new ObjectInputStream(is);
-            banco = (HashMap<String, ArrayList<Object>>)ios.readObject();
+            banco = (HashMap<String, ArrayList<Object>>) ios.readObject();
             ios.close();
             is.close();
         } else {
@@ -69,7 +69,7 @@ public class GenericDAO {
         oos = new ObjectOutputStream(os);
     }
     
-    public void commit() throws Exception {
+    public synchronized void commit() throws Exception {
         try {
             oos.writeObject(banco);
         } catch (Exception e) {
@@ -81,7 +81,7 @@ public class GenericDAO {
         oos.close();
     }
 
-    public void createEntity(String name) throws DuplicatedEntityException {
+    public synchronized void createEntity(String name) throws DuplicatedEntityException {
         for (String s : banco.keySet()) {
             if (s.equals(name)) {
                 throw new DuplicatedEntityException();
@@ -90,7 +90,7 @@ public class GenericDAO {
             banco.put(name, new ArrayList<Object>());
     }
 
-    public void removeEntity(String entityName) throws InexistentEntityException {
+    public synchronized void removeEntity(String entityName) throws InexistentEntityException {
         for (String s : banco.keySet()) {
             if (s.equals(entityName)) {
                 banco.remove(entityName);
@@ -100,7 +100,7 @@ public class GenericDAO {
         throw new InexistentEntityException();
     }
 
-    public boolean insertObject(String entityName, Object value) throws InexistentEntityException {
+    public synchronized boolean insertObject(String entityName, Object value) throws InexistentEntityException {
     	if(banco.containsKey(entityName)) {
     		banco.get(entityName).add(value);
     		return true;

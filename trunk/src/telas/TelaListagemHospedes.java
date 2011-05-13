@@ -3,32 +3,44 @@ package telas;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+
+import models.Hospede;
+import models.Hotel;
 
 import org.dyno.visual.swing.layouts.Constraints;
 import org.dyno.visual.swing.layouts.GroupLayout;
 import org.dyno.visual.swing.layouts.Leading;
+
+import util.Servico;
 
 //VS4E -- DO NOT REMOVE THIS LINE!
 public class TelaListagemHospedes extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JLabel jLabel0;
-	private JButton jButton0;
-	private JButton jButton1;
 	private JButton jButton2;
 	private JButton jButton3;
 	private JList jList0;
 	private DefaultListModel listModel;
 	private JScrollPane jScrollPane0;
+	private JLabel jLabel1;
+	private JTextField jTextField0;
+	private JButton jButton4;
+	private JComboBox jComboBox0;
+	private DefaultComboBoxModel comboModel;
 	private static final String PREFERRED_LOOK_AND_FEEL = "javax.swing.plaf.metal.MetalLookAndFeel";
 	public TelaListagemHospedes() {
 		initComponents();
@@ -38,11 +50,64 @@ public class TelaListagemHospedes extends JFrame {
 		setLayout(new GroupLayout());
 		add(getJButton2(), new Constraints(new Leading(16, 12, 12), new Leading(12, 12, 12)));
 		add(getJLabel0(), new Constraints(new Leading(188, 10, 10), new Leading(14, 10, 10)));
-		add(getJButton1(), new Constraints(new Leading(311, 150, 10, 10), new Leading(286, 10, 10)));
-		add(getJButton0(), new Constraints(new Leading(133, 10, 10), new Leading(286, 12, 12)));
-		add(getJButton3(), new Constraints(new Leading(16, 12, 12), new Leading(286, 12, 12)));
-		add(getJScrollPane0(), new Constraints(new Leading(21, 470, 10, 10), new Leading(58, 199, 10, 10)));
-		setSize(510, 329);
+		add(getJButton3(), new Constraints(new Leading(21, 12, 12), new Leading(327, 10, 10)));
+		add(getJScrollPane0(), new Constraints(new Leading(22, 470, 10, 10), new Leading(117, 199, 10, 10)));
+		add(getJLabel1(), new Constraints(new Leading(30, 10, 10), new Leading(77, 10, 10)));
+		add(getJTextField0(), new Constraints(new Leading(181, 182, 10, 10), new Leading(75, 12, 12)));
+		add(getJButton4(), new Constraints(new Leading(375, 12, 12), new Leading(72, 12, 12)));
+		add(getJComboBox0(), new Constraints(new Leading(179, 182, 10, 10), new Leading(44, 12, 12)));
+		setSize(510, 394);
+	}
+
+	private JComboBox getJComboBox0() {
+		if (jComboBox0 == null) {
+			jComboBox0 = new JComboBox();
+//			jComboBox0.setModel(new DefaultComboBoxModel(new Object[] { "item0", "item1", "item2", "item3" }));
+//			comboModel = new DefaultComboBoxModel();
+//			try{
+//				ArrayList<Hotel> hoteis = Servico.getServico().pegarHoteis();
+//				for(Hotel h: hoteis){
+//					comboModel.addElement(h.getNome());
+//				}
+//				jComboBox0.setModel(comboModel);
+//			}catch(Exception e){
+//				
+//			}
+			
+			jComboBox0.setDoubleBuffered(false);
+			jComboBox0.setBorder(null);
+			jComboBox0.setVisible(false);
+		}
+		return jComboBox0;
+	}
+
+	private JButton getJButton4() {
+		if (jButton4 == null) {
+			jButton4 = new JButton();
+			jButton4.setText("Listar");
+			jButton4.addActionListener(new ActionListener() {
+	
+				public void actionPerformed(ActionEvent event) {
+					jButton4ActionActionPerformed(event);
+				}
+			});
+		}
+		return jButton4;
+	}
+
+	private JTextField getJTextField0() {
+		if (jTextField0 == null) {
+			jTextField0 = new JTextField();
+		}
+		return jTextField0;
+	}
+
+	private JLabel getJLabel1() {
+		if (jLabel1 == null) {
+			jLabel1 = new JLabel();
+			jLabel1.setText("Listar hospedes de hotel:");
+		}
+		return jLabel1;
 	}
 
 	private JScrollPane getJScrollPane0() {
@@ -56,15 +121,18 @@ public class TelaListagemHospedes extends JFrame {
 	private JList getJList0() {
 		if (jList0 == null) {
 			jList0 = new JList();
-			listModel = new DefaultListModel();
-			listModel.addElement("item0");
-			listModel.addElement("item1");
-			listModel.addElement("item2");
-			listModel.addElement("item3");
-			listModel.addElement("item4");
-			listModel.addElement("item5");
-			listModel.addElement("item6");
-			jList0.setModel(listModel);
+//			listModel = new DefaultListModel();
+//			
+////			Servico.getServico().pegarHospedes();
+//			
+//			listModel.addElement("item0");
+//			listModel.addElement("item1");
+//			listModel.addElement("item2");
+//			listModel.addElement("item3");
+//			listModel.addElement("item4");
+//			listModel.addElement("item5");
+//			listModel.addElement("item6");
+//			jList0.setModel(listModel);
 		}
 		return jList0;
 	}
@@ -96,28 +164,6 @@ public class TelaListagemHospedes extends JFrame {
 			});
 		}
 		return jButton2;
-	}
-
-	private JButton getJButton1() {
-		if (jButton1 == null) {
-			jButton1 = new JButton();
-			jButton1.setText("Editar selecionado");
-		}
-		return jButton1;
-	}
-
-	private JButton getJButton0() {
-		if (jButton0 == null) {
-			jButton0 = new JButton();
-			jButton0.setText("Apagar selecionado");
-			jButton0.addActionListener(new ActionListener() {
-	
-				public void actionPerformed(ActionEvent event) {
-					jButton0ActionActionPerformed(event); 
-				}
-			});
-		}
-		return jButton0;
 	}
 
 	private JLabel getJLabel0() {
@@ -176,10 +222,29 @@ public class TelaListagemHospedes extends JFrame {
 		TesteGetIndex x = new TesteGetIndex();
 		int i = jList0.getSelectedIndex();
 		if(i>=0){
-			x.getJLabel0().setText(listModel.get(i).toString());
-			x.setVisible(true);
+//			x.getJLabel0().setText(listModel.get(i).toString());
+//			
+//			
+//			x.setVisible(true);
 			
 		}
+	}
+
+	private void jButton4ActionActionPerformed(ActionEvent event) {
+		listModel = new DefaultListModel();
+		String nomeHotel = jTextField0.getText();
+		
+//		int i = jComboBox0.getSelectedIndex();
+//		String nomeHotel = comboModel.getElementAt(i).toString();
+		
+		try{
+			ArrayList<Hospede> hospedes = Servico.getServico().pegarHospedes(nomeHotel);
+		    for(Hospede h: hospedes){
+		    	listModel.addElement(h.getNome() + "       " + h.getCpf());
+		    }
+		
+		}catch(Exception e){}
+		jList0.setModel(listModel);
 	}
 
 }

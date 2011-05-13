@@ -25,6 +25,11 @@ public interface HotelIF extends Remote{
 	
 	public String listarHoteis() throws RemoteException, Exception;
 	
+	public ArrayList<Hospede> pegarHospedes(String nomeHotel) throws Exception;
+	
+	public ArrayList<Quarto> pegarQuartos(String hotelNome) throws Exception;
+
+	
 	public HashMap<Quarto, ArrayList<Reserva>> getAllReservasPorQuarto(String nomeHotel) throws RemoteException, Exception;
 	
     public String estenderReserva(String nomeHotel, String cpf, int numQuarto, int numDias) throws RemoteException, ParseException, Exception;
@@ -42,9 +47,9 @@ public interface HotelIF extends Remote{
     
 //    Hospede
     
-    public String cadastrarHospede(String nomeHotel, String nome, String cpf, String email, String telefone) throws RemoteException, Exception;
+    public String cadastrarHospede(String nomeHotel, String nome, String cpf, String email, String telefone, String endereco) throws RemoteException, Exception;
     
-    public boolean removeHospedeByCpf(String nomeHotel, String cpf) throws RemoteException, Exception;
+    public String removeHospedeByCpf(String nomeHotel, String cpf) throws RemoteException, Exception;
 	
     public Hospede getHospedeByCpf(String nomeHotel, String cpf) throws RemoteException, Exception;
     
@@ -59,6 +64,8 @@ public interface HotelIF extends Remote{
     public String acharPendenciaFinanceiraHospede(String cpf) throws RemoteException, Exception;
 
 	String printDB() throws Exception;
+
+	public ArrayList<Hotel> pegarHoteis() throws Exception;
 
 
 }

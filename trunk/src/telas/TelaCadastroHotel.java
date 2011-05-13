@@ -4,7 +4,6 @@ import interfaces.HotelIF;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
@@ -20,6 +19,8 @@ import org.dyno.visual.swing.layouts.Constraints;
 import org.dyno.visual.swing.layouts.GroupLayout;
 import org.dyno.visual.swing.layouts.Leading;
 
+import util.Servico;
+
 //VS4E -- DO NOT REMOVE THIS LINE!
 public class TelaCadastroHotel extends JFrame {
 
@@ -33,6 +34,8 @@ public class TelaCadastroHotel extends JFrame {
 	private JTextField jTextField1;
 	private JTextField jTextField0;
 	private JTextField jTextField2;
+	private JLabel jLabel4;
+	private JTextField jTextField3;
 	private static final String PREFERRED_LOOK_AND_FEEL = "javax.swing.plaf.metal.MetalLookAndFeel";
 	public TelaCadastroHotel() {
 		initComponents();
@@ -43,14 +46,30 @@ public class TelaCadastroHotel extends JFrame {
 		add(getJLabel1(), new Constraints(new Leading(48, 10, 10), new Leading(59, 10, 10)));
 		add(getJLabel2(), new Constraints(new Leading(39, 12, 12), new Leading(99, 12, 12)));
 		add(getJLabel3(), new Constraints(new Leading(30, 12, 12), new Leading(135, 12, 12)));
-		add(getJButton0(), new Constraints(new Leading(117, 10, 10), new Leading(176, 10, 10)));
-		add(getJButton1(), new Constraints(new Leading(229, 10, 10), new Leading(176, 12, 12)));
 		add(getJLabel0(), new Constraints(new Leading(156, 12, 12), new Leading(14, 25, 12, 12)));
 		add(getJTextField1(), new Constraints(new Leading(97, 199, 10, 10), new Leading(99, 12, 12)));
 		add(getJTextField0(), new Constraints(new Leading(97, 274, 10, 10), new Leading(59, 12, 12)));
 		add(getJTextField2(), new Constraints(new Leading(97, 274, 12, 12), new Leading(135, 12, 12)));
+		add(getJButton0(), new Constraints(new Leading(118, 10, 10), new Leading(208, 12, 12)));
+		add(getJButton1(), new Constraints(new Leading(230, 10, 10), new Leading(208, 12, 12)));
+		add(getJLabel4(), new Constraints(new Leading(55, 10, 10), new Leading(171, 10, 10)));
+		add(getJTextField3(), new Constraints(new Leading(100, 176, 10, 10), new Leading(171, 12, 12)));
 		setSize(420, 251);
-//		setUndecorated(true);
+	}
+
+	private JTextField getJTextField3() {
+		if (jTextField3 == null) {
+			jTextField3 = new JTextField();
+		}
+		return jTextField3;
+	}
+
+	private JLabel getJLabel4() {
+		if (jLabel4 == null) {
+			jLabel4 = new JLabel();
+			jLabel4.setText("Diaria:");
+		}
+		return jLabel4;
 	}
 
 	private JTextField getJTextField2() {
@@ -89,18 +108,9 @@ public class TelaCadastroHotel extends JFrame {
 			jButton1.addActionListener(new ActionListener() {
 				
 				@Override
-				public void actionPerformed(ActionEvent arg0) {
+				public void actionPerformed(ActionEvent event) {
 					// TODO Auto-generated method stub
-					try {
-						Registry registry = LocateRegistry.getRegistry(1099);
-						HotelIF servico = (HotelIF) registry.lookup("HotelService");
-						String retorno = "";//servico.cadastrarHotel(jTextField0.getText(), jTextField1.getText());
-						//JOptionPane.showMessageDialog(this, retorno, "Mensagem", JOptionPane.INFORMATION_MESSAGE);
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					
+					jButton1ActionActionPerformed(event);
 				}
 			});
 		}
@@ -124,7 +134,7 @@ public class TelaCadastroHotel extends JFrame {
 	private JLabel getJLabel3() {
 		if (jLabel3 == null) {
 			jLabel3 = new JLabel();
-			jLabel3.setText("Endere�o:");
+			jLabel3.setText("Endereco:");
 		}
 		return jLabel3;
 	}
@@ -181,6 +191,19 @@ public class TelaCadastroHotel extends JFrame {
 
 	private void jButton0ActionActionPerformed(ActionEvent event) {
 		this.dispose();
+	}
+	
+	private void jButton1ActionActionPerformed(ActionEvent event) {
+		String nome = jTextField0.getText();
+		String gerente = jTextField1.getText();
+		String endereco = jTextField2.getText();
+		String diaria = jTextField3.getText();
+		double valorDiaria = Double.parseDouble(diaria);
+		
+		try{
+			Servico.getServico().cadastrarHotel(nome, gerente, endereco, valorDiaria);
+			JOptionPane.showMessageDialog(null, "Hotel cadastrado!","",JOptionPane.INFORMATION_MESSAGE);
+		}catch(Exception e){}
 	}
 
 }

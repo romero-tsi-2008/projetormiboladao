@@ -4,6 +4,7 @@ import interfaces.HotelIF;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -45,6 +46,11 @@ public class HotelService extends UnicastRemoteObject implements  HotelIF {
 		return daoHotel.getAllReservasPorQuarto(nomeHotel);
 	}
 	
+	@Override
+	public String estenderReserva(String nomeHotel, String cpf, int numQuarto, int numDias) throws RemoteException, ParseException {
+		return daoHotel.estenderReserva(nomeHotel, cpf, numQuarto, numDias);
+	}
+	
 //	Quarto
 	
 	@Override
@@ -60,17 +66,17 @@ public class HotelService extends UnicastRemoteObject implements  HotelIF {
 //	Hospede
 	
 	@Override
-    public boolean cadastrarHospede(String nomeHotel, String nome, String cpf, String email, String telefone) throws RemoteException {
+    public String cadastrarHospede(String nomeHotel, String nome, String cpf, String email, String telefone) throws RemoteException {
     	return daoHotel.cadastrarHospede(nomeHotel, nome, cpf, email, telefone);
     }
     
 	@Override
-    public boolean reservarQuarto(String nomeHotel, int numQuarto, String cpf, String dataEntrada, String dataSaida) throws RemoteException {
+    public String reservarQuarto(String nomeHotel, int numQuarto, String cpf, String dataEntrada, String dataSaida) throws RemoteException, ParseException {
     	return daoHotel.reservarQuarto(nomeHotel, numQuarto, cpf, dataEntrada, dataSaida);
     }
     
 	@Override
-    public boolean alocarHospedeQuarto(String nomeHotel, int num, String cpf) throws RemoteException {
+    public String alocarHospedeQuarto(String nomeHotel, int num, String cpf) throws RemoteException {
     	return alocarHospedeQuarto(nomeHotel, num, cpf);
     }
     

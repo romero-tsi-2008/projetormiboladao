@@ -2,6 +2,7 @@ package interfaces;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -22,6 +23,9 @@ public interface HotelIF extends Remote{
 	
 	public HashMap<Quarto, ArrayList<Reserva>> getAllReservasPorQuarto(String nomeHotel) throws RemoteException;
 	
+    public String estenderReserva(String nomeHotel, String cpf, int numQuarto, int numDias) throws RemoteException, ParseException;
+
+	
 //	Quarto
 	
 	public boolean addQuarto(String nomeHotel, Quarto q) throws RemoteException;
@@ -30,17 +34,17 @@ public interface HotelIF extends Remote{
     
     public Quarto getQuartoByNum(String nomeHotel, int num) throws RemoteException;
     
-    public boolean reservarQuarto(String nomeHotel, int numQuarto, String cpf, String dataEntrada, String dataSaida) throws RemoteException;
+    public String reservarQuarto(String nomeHotel, int numQuarto, String cpf, String dataEntrada, String dataSaida) throws RemoteException, ParseException;
     
 //    Hospede
     
-    public boolean cadastrarHospede(String nomeHotel, String nome, String cpf, String email, String telefone) throws RemoteException;
+    public String cadastrarHospede(String nomeHotel, String nome, String cpf, String email, String telefone) throws RemoteException;
     
     public boolean removeHospedeByCpf(String nomeHotel, String cpf) throws RemoteException;
 	
     public Hospede getHospedeByCpf(String nomeHotel, String cpf) throws RemoteException;
     
-    public boolean alocarHospedeQuarto(String nomeHotel, int num, String cpf) throws RemoteException;
+    public String alocarHospedeQuarto(String nomeHotel, int num, String cpf) throws RemoteException;
     
     public boolean pagarDivida(String nomeHotel, String cpf, double valor) throws RemoteException;
     

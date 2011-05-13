@@ -106,15 +106,15 @@ public class Hotel implements Serializable {
     public String toString() {
     	String impressora = "";
     	int contador = 1;
-    	impressora = "Nome: "+ getNome() + "\nEndereço: "+ getEndereco() + "\nQuantidade de quartos: "+quartos.size()+
-    					"\nQuartos livres: "+getNumQuartosLivres()+"\nQuartos ocupados: "+getNumQuartosOcupados()+"\nHóspedes cadastrados: "+
-    					hospedesCadastrados.size()+"\nLista de hóspedes:";
+    	impressora = "\nNome: "+ getNome() + "\nEndereco: "+ getEndereco() + "\nQuantidade de quartos: "+quartos.size()+
+    					"\nQuartos livres: "+getNumQuartosLivres()+"\nQuartos ocupados: "+getNumQuartosOcupados()+"\nHospedes cadastrados: "+
+    					hospedesCadastrados.size()+"\nLista de hospedes:";
     	for (Hospede h : hospedesCadastrados) {
     		impressora += "\n"+String.valueOf(contador) + ".\n";
     		impressora += h.toString();
     		contador += 1;
     	}
-    	impressora += "\n\n---";
+    	impressora += "\n\n\n---";
     	return impressora;
     }
 }

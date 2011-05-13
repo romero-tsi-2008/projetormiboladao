@@ -5,15 +5,13 @@
 
 package models;
 
-import interfaces.HospedeIF;
-
 import java.io.Serializable;
 
 /**
  *
  * @author romero
  */
-public class Hospede implements Serializable, HospedeIF {
+public class Hospede implements Serializable {
     private String nome;
     private String endereco;
     private String telefone;

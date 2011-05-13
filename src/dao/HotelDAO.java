@@ -20,6 +20,7 @@ public class HotelDAO extends GenericDAO {
 	
 	public HotelDAO() throws Exception {
 		super();
+		createEntity("HOTEL");
 	}
 	
 	public String cadastrarHotel(String nomeHotel, String nomeGerente, String endereco, double valorDiaria) throws Exception {
@@ -51,7 +52,7 @@ public class HotelDAO extends GenericDAO {
 		
 		commit();
 		close();
-		impressora += "Hotel cadastrado com sucesso";
+		impressora += "Quarto cadastrado com sucesso";
 		return impressora;
 	}
 	
@@ -281,15 +282,16 @@ public class HotelDAO extends GenericDAO {
     public String alocarHospedeQuarto(String nomeHotel, int num, String cpf, String dataTermino) throws Exception {
     	begin();
     	String impressora = "";
-    	Hotel hotel = getHotelByNome(nomeHotel);
+//    	Hotel hotel = getHotelByNome(nomeHotel);
     	Quarto quartoAux = getQuartoByNum(nomeHotel, num);
     	Hospede hospedeAux = getHospedeByCpf(nomeHotel, cpf);
     	
-    	for (Quarto q : hotel.getQuartos()) {
-    		if (q.getNum() == num && !q.isOcupado()) {
-    			q.setHospede(hospedeAux);
-    			q.setOcupado(true);
-    			quartoAux = q;
+//    	for (Quarto q : hotel.getQuartos()) {
+//    		if (q.getNum() == num && !q.isOcupado()) {
+    		if (quartoAux != null && !quartoAux.isOcupado() ) {
+    			quartoAux.setHospede(hospedeAux);
+    			quartoAux.setOcupado(true);
+//    			quartoAux = q;
     			
     			//setando a data de inicio e fim quando um hospede eh alocado ao quarto
     			SimpleDateFormat formatador = new SimpleDateFormat("dd/MM/yyyy");
@@ -306,7 +308,7 @@ public class HotelDAO extends GenericDAO {
     			impressora += "Hospede "+hospedeAux.getNome()+" alocado ao quarto "+quartoAux.getNum()+" com sucesso";
     			return impressora;
     		}
-    	}
+//    	}
     	commit();
         close();
     	impressora += "Nao foi possivel alocar o hospede "+hospedeAux.getNome()+" ao quarto "+quartoAux.getNum()+". Motivo desconhecido";
@@ -346,7 +348,8 @@ public class HotelDAO extends GenericDAO {
 		return impressora;
     }
     
-	public double gerarContaHospede(String nomeHotel, String cpf) throws Exception {
+	public String gerarContaHospede(String nomeHotel, String cpf) throws Exception {
+		String impressora = "";
 		begin();
 		Hotel hotelAux = getHotelByNome(nomeHotel);
 		Hospede hospedeAux = getHospedeByCpf(nomeHotel, cpf);
@@ -355,16 +358,17 @@ public class HotelDAO extends GenericDAO {
 			if (q.getHospede().getCpf().equals(cpf)) {
 				if (q.isOcupado()) { //se ta ocupado e o cpf eh o do parametro, eh pq eh o quarto q o cara ta
 					double valorConta = hotelAux.getDiaria() * (q.getHospede().getUltimaHospedagem().getNumDiarias());
-					System.out.println("Conta gerada. Valor = "+valorConta);
-					return valorConta;
+					impressora += "Conta gerada. Valor = "+valorConta;
+					return impressora;
 				}
 			}
 		}
         close();
-		return 0;
+		return impressora;
 	}
     
-    public boolean pagarDivida(String nomeHotel, String cpf, double valor) throws Exception {
+    public String pagarDivida(String nomeHotel, String cpf, double valor) throws Exception {
+    	String impressora = "";
     	begin();
     	Hotel hotel = getHotelByNome(nomeHotel);
     	Hospede hospedeAux = getHospedeByCpf(nomeHotel, cpf);  
@@ -372,27 +376,27 @@ public class HotelDAO extends GenericDAO {
     		double valorDivida = hospedeAux.getUltimaHospedagem().getDivida();
     		if (valor == valorDivida) {
     			hospedeAux.getUltimaHospedagem().setDivida(valor - hospedeAux.getUltimaHospedagem().getDivida());
-    			System.out.println("Divida do hospede "+ hospedeAux.getNome()+" do quarto "+ hospedeAux.getUltimaHospedagem().getQuarto().getNum()+ " com valor de R$:"+ hospedeAux.getUltimaHospedagem().getDivida()+ " paga com sucesso");
-    			return true;
+    			impressora += "Divida do hospede "+ hospedeAux.getNome()+" do quarto "+ hospedeAux.getUltimaHospedagem().getQuarto().getNum()+ " com valor de R$:"+ hospedeAux.getUltimaHospedagem().getDivida()+ " paga com sucesso";
+    			return impressora;
     		}
     		else {
     			if (valor > valorDivida) {
-    				System.out.println("Divida do hospede "+ hospedeAux.getNome()+" do quarto "+ hospedeAux.getUltimaHospedagem().getQuarto().getNum()+ " com valor de R$:"+ hospedeAux.getUltimaHospedagem().getDivida()+ " paga com sucesso. Troco = R$: "+(valor-valorDivida));
-    				return true;
+    				impressora += "Divida do hospede "+ hospedeAux.getNome()+" do quarto "+ hospedeAux.getUltimaHospedagem().getQuarto().getNum()+ " com valor de R$:"+ hospedeAux.getUltimaHospedagem().getDivida()+ " paga com sucesso. Troco = R$: "+(valor-valorDivida);
+    				return impressora;
     			}
     			else if (valorDivida < valor) {
-    				System.out.println("ERRO: favor entrar com um valor igual ao da divida");
-    				return false;
+    				impressora += "ERRO: favor entrar com um valor igual ao da divida";
+    				return impressora;
     			}
     		}
     	}
     	else {
-    		System.out.println("Hospede "+hospedeAux.getNome()+" nao possui dividas no hotel"+hotel.getNome());
-    		return false;
+    		impressora += "Hospede "+hospedeAux.getNome()+" nao possui dividas no hotel"+hotel.getNome();
+    		return impressora;
     	}
     	commit();
         close();
-    	return true;
+    	return impressora;
     }
     
     public String consultarPendenciaFinanceiraHospede(String nomeHotel, String cpf) throws Exception {
@@ -466,6 +470,9 @@ public class HotelDAO extends GenericDAO {
 		saidaCalendar.setTime(formatador.parse(dataSaida));
 		quantDiasReserva = pegarDiferencaDatasEmDias(entradaCalendar, saidaCalendar);
     	
+		if (reservas.size() == 0 ) {
+			return true;
+		}
 		
 		Reserva reservaAnterior = null;
     	for (Reserva reservaAtual : reservas) {
@@ -504,7 +511,7 @@ public class HotelDAO extends GenericDAO {
     }
     
     public int pegarDiferencaDatasEmDias(Calendar data1, Calendar data2) {    	
-    	long diferenca = data1.getTimeInMillis() - data2.getTimeInMillis();
+    	long diferenca = data2.getTimeInMillis() - data1.getTimeInMillis();
 		int diasEntreDatas = (int) (diferenca / (86400000));
 		return diasEntreDatas;
     }

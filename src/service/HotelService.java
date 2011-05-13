@@ -20,14 +20,12 @@ import dao.HotelDAO;
 import exceptions.InexistentEntityException;
 
 public class HotelService extends UnicastRemoteObject implements  HotelIF {
-	HotelDAO daoHotel; 
+	HotelDAO daoHotel = new HotelDAO(); 
 	
 	public HotelService() throws Exception {
 	}
 	
 //	Hotel
-	
-
 	@Override
 	public String cadastrarHotel(String nomeHotel, String nomeGerente, String endereco, double valorDiaria) throws Exception {
 		return daoHotel.cadastrarHotel(nomeHotel, nomeGerente, endereco, valorDiaria);
@@ -56,6 +54,11 @@ public class HotelService extends UnicastRemoteObject implements  HotelIF {
 	@Override
 	public String estenderReserva(String nomeHotel, String cpf, int numQuarto, int numDias) throws Exception {
 		return daoHotel.estenderReserva(nomeHotel, cpf, numQuarto, numDias);
+	}
+	
+	@Override
+	public String printDB() throws Exception {
+		return daoHotel.printDb();
 	}
 	
 //	Quarto
@@ -88,7 +91,7 @@ public class HotelService extends UnicastRemoteObject implements  HotelIF {
     }
     
 	@Override
-    public boolean pagarDivida(String nomeHotel, String cpf, double valor) throws Exception {
+    public String pagarDivida(String nomeHotel, String cpf, double valor) throws Exception {
     	return daoHotel.pagarDivida(nomeHotel, cpf, valor);
     }
     
@@ -108,7 +111,7 @@ public class HotelService extends UnicastRemoteObject implements  HotelIF {
 	}
     
 	@Override
-	public double gerarContaHospede(String nomeHotel, String cpf) throws Exception {
+	public String gerarContaHospede(String nomeHotel, String cpf) throws Exception {
 		return daoHotel.gerarContaHospede(nomeHotel, cpf);
 	}
 

@@ -13,22 +13,34 @@ import java.util.Calendar;
  * @author romero
  */
 public class UltimaHospedagem implements Serializable {
-    private Calendar data;
+    private Calendar dataInicio;
+    private Calendar dataTermino;
     private Hotel hotel;
     private Quarto quarto;
     private double divida;
+    private int numDiarias;
     
-    public UltimaHospedagem() {
+    public void setDataInicio(Calendar dataInicio) {
+		this.dataInicio = dataInicio;
+	}
+
+	public Calendar getDataInicio() {
+		return dataInicio;
+	}
+
+	public void setDataTermino(Calendar dataTermino) {
+		this.dataTermino = dataTermino;
+	}
+
+	public Calendar getDataTermino() {
+		return dataTermino;
+	}
+
+	public UltimaHospedagem() {
     	divida = 0;
     }
    
-    public Calendar getData() {
-        return data;
-    }
-
-    public void setData(Calendar data) {
-        this.data = data;
-    }
+    
 
     public Hotel getHotel() {
         return hotel;
@@ -52,5 +64,13 @@ public class UltimaHospedagem implements Serializable {
 
 	public double getDivida() {
 		return divida;
+	}
+
+	public void setNumDiarias(int numDiarias) {
+		this.numDiarias = numDiarias;
+	}
+
+	public int getNumDiarias() {
+		return numDiarias;
 	}
 }

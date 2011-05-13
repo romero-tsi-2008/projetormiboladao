@@ -1,5 +1,6 @@
 package dao;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -163,7 +164,7 @@ public class HotelDAO extends GenericDAO {
     					}
     					
     					for (Reserva r : q.getReservas()) {
-    						if (r.getDataSaida().before(saidaCalendar)) { //se a data 
+    						if (r.getDataSaida().before(entradaCalendar)) { //se a data de entrada da nova reserva for depois da data de saida da ultima reserva
     							Calendar hoje = new GregorianCalendar(); //pegando a data atual
 
     							Reserva novaReserva = new Reserva();
@@ -206,7 +207,7 @@ public class HotelDAO extends GenericDAO {
     	return true;
     }
     
-    public boolean alocarHospedeQuarto(String nomeHotel, int num, String cpf) {
+    public boolean alocarHospedeQuarto(String nomeHotel, int num, String cpf, String dataTermino) throws ParseException {
     	Hotel hotel = getHotelByName(nomeHotel);
     	Quarto quartoAux = getQuartoByNum(nomeHotel, num);
     	Hospede hospedeAux = getHospedeByCpf(nomeHotel, cpf);
@@ -215,6 +216,19 @@ public class HotelDAO extends GenericDAO {
     			q.setHospede(hospedeAux);
     			q.setOcupado(true);
     			quartoAux = q;
+    			
+    			//setando a data de inicio e fim quando um hospede eh alocado ao quarto
+    			SimpleDateFormat formatador = new SimpleDateFormat("dd/MM/yyyy");
+				Calendar terminoCalendar = new GregorianCalendar();
+				terminoCalendar.setTime(formatador.parse(dataTermino));
+				
+				Calendar hoje = new GregorianCalendar();
+    			hospedeAux.getUltimaHospedagem().setDataInicio(hoje);
+    			hospedeAux.getUltimaHospedagem().setDataTermino(terminoCalendar);
+    			long diferenca = terminoCalendar.getTimeInMillis() - hoje.getTimeInMillis();
+    			int diasEntreDatas = (int) (diferenca / (86400000));
+    			hospedeAux.getUltimaHospedagem().setNumDiarias(diasEntreDatas);
+    			
     			System.out.println("Hospede "+hospedeAux.getNome()+" alocado ao quarto "+quartoAux.getNum()+" com sucesso");
     			return true;
     		}
@@ -301,6 +315,20 @@ public class HotelDAO extends GenericDAO {
     		}
     	}
     	return false;
+	}
+	
+	public double gerarContaHospede(String nomeHotel, String cpf) {
+		Hotel hotelAux = getHotelByName(nomeHotel);
+		Hospede hospedeAux = getHospedeByCpf(nomeHotel, cpf);
+		
+		for (Quarto q : hotelAux.getQuartos()) {
+			if (q.getHospede().getCpf().equals(cpf)) {
+				if (q.isOcupado()) {
+					return 100 * (q.getHospede().getUltimaHospedagem().getNumDiarias());
+				}
+			}
+		}
+		return 0;
 	}
 	
 }

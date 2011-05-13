@@ -35,30 +35,34 @@ public class Cliente1 {
 	    	HotelDAO hotelDao = new HotelDAO();
 	    	hotelDao.begin();
 	    	
-//	    	gDao.createEntity("HOTEL");
-//	    	
-//	    	hotelDao.insertObject("HOTEL", hotel1);
-//	    	
-//	    	Quarto q1 = new Quarto(10);
-//	    	Quarto q2 = new Quarto(20);
-//	    	Quarto q3 = new Quarto(30);
-//	    	hotelDao.addQuarto("Hotel Teste", q1);
-//	    	hotelDao.addQuarto("Hotel Teste", q2);
-//	    	hotelDao.addQuarto("Hotel Teste", q3);
-//	    	
-//	    	hotelDao.cadastrarCliente("Hotel Teste", "Zekinha", "12312312312", "zeca@a.com.br", "2222-2222");
-//	    	hotelDao.cadastrarCliente("Hotel Teste", "Maria", "14512312312", "maria@a.com.br", "2222-99999");
-//	    	
-//	    	hotelDao.alocarHospedeQuarto("Hotel Teste", 10, "12312312312");
-//	    	hotelDao.alocarHospedeQuarto("Hotel Teste", 30, "14512312312");
-//	    	
-//	    	hotelDao.consultarPendenciaFinanceiraHospede("Hotel Teste", "12312312312");
-//	    	
-//	    	hotelDao.listarHoteis();
-//	    	
-//	    	hotelDao.reservarQuarto("Hotel Teste", 10, "12312312312", "10/06/2011", "11/06/2011");
-//	    	
+	    	gDao.createEntity("HOTEL");
+	    	
+	    	hotelDao.insertObject("HOTEL", hotel1);
+	    	
+	    	Quarto q1 = new Quarto(10);
+	    	Quarto q2 = new Quarto(20);
+	    	Quarto q3 = new Quarto(30);
+	    	hotelDao.addQuarto("Hotel Teste", q1);
+	    	hotelDao.addQuarto("Hotel Teste", q2);
+	    	hotelDao.addQuarto("Hotel Teste", q3);
+	    	
+	    	hotelDao.cadastrarHospede("Hotel Teste", "Zekinha", "12312312312", "zeca@a.com.br", "2222-2222");
+	    	hotelDao.cadastrarHospede("Hotel Teste", "Maria", "14512312312", "maria@a.com.br", "2222-99999");
+	    	
+	    	hotelDao.alocarHospedeQuarto("Hotel Teste", 10, "12312312312", "15/05/2011");
+	    	hotelDao.alocarHospedeQuarto("Hotel Teste", 30, "14512312312", "15/05/2011");
+	    	
+	    	hotelDao.consultarPendenciaFinanceiraHospede("Hotel Teste", "12312312312");
+	    	
+	    	hotelDao.reservarQuarto("Hotel Teste", 10, "12312312312", "10/06/2011", "11/06/2011");
+	    	
+	    	hotelDao.acharPendenciaFinanceiraHospede("12312312312");
+	    	
+	    	hotelDao.gerarContaHospede("Hotel Teste", "12312312312");
+//	    	hotelDao.pagarDivida("Hotel Teste", "12312312312", 500);
+	    	
 	    	hotelDao.commit();
+	    	System.out.println("\n\n\n");
 	    	hotelDao.printDb();
 	    	hotelDao.close();
 			

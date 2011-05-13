@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.Iterator;
 
 import models.Hospede;
@@ -22,6 +23,30 @@ public class HotelService extends UnicastRemoteObject implements  HotelIF {
 	public HotelService() throws Exception {
 	}
 	
+//	Hotel
+	
+	@Override
+	public Hotel getHotelByNome(String nomeHotel) throws RemoteException {
+		return daoHotel.getHotelByNome(nomeHotel);
+	}
+
+	@Override
+	public void removeHotelByNome(String nomeHotel) throws RemoteException {
+		daoHotel.removeHotelByNome(nomeHotel);
+	}
+
+	@Override
+	public String listarHoteis() throws RemoteException {
+		return daoHotel.listarHoteis();
+	}
+	
+	@Override
+	public HashMap<Quarto, ArrayList<Reserva>> getAllReservasPorQuarto(String nomeHotel) throws RemoteException {
+		return daoHotel.getAllReservasPorQuarto(nomeHotel);
+	}
+	
+//	Quarto
+	
 	@Override
 	public boolean addQuarto(String nomeHotel, Quarto q) throws RemoteException {
 		return daoHotel.addQuarto(nomeHotel, q);
@@ -32,9 +57,11 @@ public class HotelService extends UnicastRemoteObject implements  HotelIF {
     	return daoHotel.deleteQuarto(nomeHotel, num);
     }
     
+//	Hospede
+	
 	@Override
-    public boolean cadastrarCliente(String nomeHotel, String nome, String cpf, String email, String telefone) throws RemoteException {
-    	return daoHotel.cadastrarCliente(nomeHotel, nome, cpf, email, telefone);
+    public boolean cadastrarHospede(String nomeHotel, String nome, String cpf, String email, String telefone) throws RemoteException {
+    	return daoHotel.cadastrarHospede(nomeHotel, nome, cpf, email, telefone);
     }
     
 	@Override
@@ -68,8 +95,13 @@ public class HotelService extends UnicastRemoteObject implements  HotelIF {
 	}
     
 	@Override
-	public double gerarContaHospede(String nomeHotel, String cpf) {
+	public double gerarContaHospede(String nomeHotel, String cpf) throws RemoteException {
 		return daoHotel.gerarContaHospede(nomeHotel, cpf);
+	}
+
+	@Override
+	public Quarto getQuartoByNum(String nomeHotel, int num) throws RemoteException {
+		return daoHotel.getQuartoByNum(nomeHotel, num);
 	}
 
 

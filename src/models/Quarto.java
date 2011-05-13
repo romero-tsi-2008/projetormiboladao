@@ -15,7 +15,7 @@ public class Quarto implements Serializable {
     private int num;
     private boolean ocupado;
     private Hospede hospede;
-    private List<Reserva> reservas;
+    private ArrayList<Reserva> reservas;
 
     public Quarto(int num) {
     	this.num = num;
@@ -48,11 +48,11 @@ public class Quarto implements Serializable {
 		return hospede;
 	}
 
-	public void setReservas(List<Reserva> reserva) {
+	public void setReservas(ArrayList<Reserva> reserva) {
 		this.reservas = reserva;
 	}
 
-	public List<Reserva> getReservas() {
+	public ArrayList<Reserva> getReservas() {
 		return reservas;
 	}
 	

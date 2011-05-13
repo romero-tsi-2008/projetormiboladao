@@ -50,13 +50,15 @@ public interface HotelIF extends Remote{
     
     public String alocarHospedeQuarto(String nomeHotel, int num, String cpf, String dataTermino) throws ParseException, RemoteException, Exception;
     
-    public boolean pagarDivida(String nomeHotel, String cpf, double valor) throws RemoteException, Exception;
+    public String pagarDivida(String nomeHotel, String cpf, double valor) throws RemoteException, Exception;
     
     public String consultarPendenciaFinanceiraHospede(String nomeHotel, String cpf) throws RemoteException, Exception;
 	
-	public double gerarContaHospede(String nomeHotel, String cpf) throws RemoteException, Exception;
+	public String gerarContaHospede(String nomeHotel, String cpf) throws RemoteException, Exception;
 
     public String acharPendenciaFinanceiraHospede(String cpf) throws RemoteException, Exception;
+
+	String printDB() throws Exception;
 
 
 }

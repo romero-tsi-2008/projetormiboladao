@@ -6,6 +6,8 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
+import util.Servico;
+
 import models.Hospede;
 import models.Hotel;
 import models.Quarto;
@@ -25,46 +27,27 @@ public class Cliente1 {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		try {
-			Registry registry = LocateRegistry.getRegistry(1099);
-			HotelIF hotel = (HotelIF) registry.lookup("HotelService");
-			
-			GenericDAO gDao = new GenericDAO();
-	    	Hotel hotel1 = new Hotel();
-	    	hotel1.setNome("Hotel Teste");
+			Servico.getServico().cadastrarHotel("Hotel Teste", "Romero", "Rua sem nome", 100.0);
+
+	    	Servico.getServico().cadastrarQuarto("Hotel Teste", 1);
+	    	Servico.getServico().cadastrarQuarto("Hotel Teste", 2);
+	    	Servico.getServico().cadastrarQuarto("Hotel Teste", 3);
 	    	
-	    	HotelDAO hotelDao = new HotelDAO();
-	    	hotelDao.begin();
+	    	Servico.getServico().cadastrarHospede("Hotel Teste", "Zekinha", "12312312312", "zeca@a.com.br", "2222-2222");
+	    	Servico.getServico().cadastrarHospede("Hotel Teste", "Maria", "14512312312", "maria@a.com.br", "2222-99999");
 	    	
-	    	gDao.createEntity("HOTEL");
+	    	Servico.getServico().alocarHospedeQuarto("Hotel Teste", 10, "12312312312", "15/05/2011");
+	    	Servico.getServico().alocarHospedeQuarto("Hotel Teste", 30, "14512312312", "15/05/2011");
 	    	
-	    	hotelDao.insertObject("HOTEL", hotel1);
+	    	Servico.getServico().consultarPendenciaFinanceiraHospede("Hotel Teste", "12312312312");
 	    	
-	    	Quarto q1 = new Quarto(10);
-	    	Quarto q2 = new Quarto(20);
-	    	Quarto q3 = new Quarto(30);
-	    	hotelDao.addQuarto("Hotel Teste", q1);
-	    	hotelDao.addQuarto("Hotel Teste", q2);
-	    	hotelDao.addQuarto("Hotel Teste", q3);
+	    	Servico.getServico().reservarQuarto("Hotel Teste", 10, "12312312312", "10/06/2011", "11/06/2011");
 	    	
-	    	hotelDao.cadastrarHospede("Hotel Teste", "Zekinha", "12312312312", "zeca@a.com.br", "2222-2222");
-	    	hotelDao.cadastrarHospede("Hotel Teste", "Maria", "14512312312", "maria@a.com.br", "2222-99999");
+	    	Servico.getServico().acharPendenciaFinanceiraHospede("12312312312");
 	    	
-	    	hotelDao.alocarHospedeQuarto("Hotel Teste", 10, "12312312312", "15/05/2011");
-	    	hotelDao.alocarHospedeQuarto("Hotel Teste", 30, "14512312312", "15/05/2011");
+	    	Servico.getServico().gerarContaHospede("Hotel Teste", "12312312312");
+//	    	Servico.getServico().pagarDivida("Hotel Teste", "12312312312", 500);
 	    	
-	    	hotelDao.consultarPendenciaFinanceiraHospede("Hotel Teste", "12312312312");
-	    	
-	    	hotelDao.reservarQuarto("Hotel Teste", 10, "12312312312", "10/06/2011", "11/06/2011");
-	    	
-	    	hotelDao.acharPendenciaFinanceiraHospede("12312312312");
-	    	
-	    	hotelDao.gerarContaHospede("Hotel Teste", "12312312312");
-//	    	hotelDao.pagarDivida("Hotel Teste", "12312312312", 500);
-	    	
-	    	hotelDao.commit();
-	    	System.out.println("\n\n\n");
-	    	hotelDao.printDb();
-	    	hotelDao.close();
 			
 		}
 		catch (Exception e) {

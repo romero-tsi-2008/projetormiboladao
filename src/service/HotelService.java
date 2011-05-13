@@ -17,6 +17,7 @@ import models.Hotel;
 import models.Quarto;
 import models.Reserva;
 import dao.HotelDAO;
+import exceptions.InexistentEntityException;
 
 public class HotelService extends UnicastRemoteObject implements  HotelIF {
 	HotelDAO daoHotel; 
@@ -26,88 +27,99 @@ public class HotelService extends UnicastRemoteObject implements  HotelIF {
 	
 //	Hotel
 	
+
 	@Override
-	public Hotel getHotelByNome(String nomeHotel) throws RemoteException {
+	public String cadastrarHotel(String nomeHotel, String nomeGerente, String endereco, double valorDiaria) throws Exception {
+		return daoHotel.cadastrarHotel(nomeHotel, nomeGerente, endereco, valorDiaria);
+	}
+	
+	@Override
+	public Hotel getHotelByNome(String nomeHotel) throws Exception {
 		return daoHotel.getHotelByNome(nomeHotel);
 	}
 
 	@Override
-	public void removeHotelByNome(String nomeHotel) throws RemoteException {
+	public void removeHotelByNome(String nomeHotel) throws Exception {
 		daoHotel.removeHotelByNome(nomeHotel);
 	}
 
 	@Override
-	public String listarHoteis() throws RemoteException {
+	public String listarHoteis() throws Exception {
 		return daoHotel.listarHoteis();
 	}
 	
 	@Override
-	public HashMap<Quarto, ArrayList<Reserva>> getAllReservasPorQuarto(String nomeHotel) throws RemoteException {
+	public HashMap<Quarto, ArrayList<Reserva>> getAllReservasPorQuarto(String nomeHotel) throws Exception {
 		return daoHotel.getAllReservasPorQuarto(nomeHotel);
 	}
 	
 	@Override
-	public String estenderReserva(String nomeHotel, String cpf, int numQuarto, int numDias) throws RemoteException, ParseException {
+	public String estenderReserva(String nomeHotel, String cpf, int numQuarto, int numDias) throws Exception {
 		return daoHotel.estenderReserva(nomeHotel, cpf, numQuarto, numDias);
 	}
 	
 //	Quarto
 	
 	@Override
-	public boolean addQuarto(String nomeHotel, Quarto q) throws RemoteException {
-		return daoHotel.addQuarto(nomeHotel, q);
+	public String cadastrarQuarto(String nomeHotel, int num) throws Exception {
+		return daoHotel.cadastrarQuarto(nomeHotel, num);
     }
 
 	@Override
-    public boolean deleteQuarto(String nomeHotel, int num) throws RemoteException {
+    public boolean deleteQuarto(String nomeHotel, int num) throws Exception {
     	return daoHotel.deleteQuarto(nomeHotel, num);
     }
     
 //	Hospede
 	
 	@Override
-    public String cadastrarHospede(String nomeHotel, String nome, String cpf, String email, String telefone) throws RemoteException {
+    public String cadastrarHospede(String nomeHotel, String nome, String cpf, String email, String telefone) throws Exception {
     	return daoHotel.cadastrarHospede(nomeHotel, nome, cpf, email, telefone);
     }
     
 	@Override
-    public String reservarQuarto(String nomeHotel, int numQuarto, String cpf, String dataEntrada, String dataSaida) throws RemoteException, ParseException {
+    public String reservarQuarto(String nomeHotel, int numQuarto, String cpf, String dataEntrada, String dataSaida) throws Exception {
     	return daoHotel.reservarQuarto(nomeHotel, numQuarto, cpf, dataEntrada, dataSaida);
     }
     
 	@Override
-    public String alocarHospedeQuarto(String nomeHotel, int num, String cpf) throws RemoteException {
-    	return alocarHospedeQuarto(nomeHotel, num, cpf);
+    public String alocarHospedeQuarto(String nomeHotel, int num, String cpf, String dataTermino) throws Exception {
+    	return daoHotel.alocarHospedeQuarto(nomeHotel, num, cpf, dataTermino);
     }
     
 	@Override
-    public boolean pagarDivida(String nomeHotel, String cpf, double valor) throws RemoteException {
+    public boolean pagarDivida(String nomeHotel, String cpf, double valor) throws Exception {
     	return daoHotel.pagarDivida(nomeHotel, cpf, valor);
     }
     
 	@Override
-    public void consultarPendenciaFinanceiraHospede(String nomeHotel, String cpf) throws RemoteException {
-    	consultarPendenciaFinanceiraHospede(nomeHotel, cpf);
+    public String consultarPendenciaFinanceiraHospede(String nomeHotel, String cpf) throws Exception {
+    	return daoHotel.consultarPendenciaFinanceiraHospede(nomeHotel, cpf);
     }
        
 	@Override
-    public Hospede getHospedeByCpf(String nomeHotel, String cpf) throws RemoteException {
+    public Hospede getHospedeByCpf(String nomeHotel, String cpf) throws Exception {
     	return daoHotel.getHospedeByCpf(nomeHotel, cpf);
     }
     
 	@Override
-	public boolean removeHospedeByCpf(String nomeHotel, String cpf) throws RemoteException {
+	public boolean removeHospedeByCpf(String nomeHotel, String cpf) throws Exception {
 		return daoHotel.removeHospedeByCpf(nomeHotel, cpf);
 	}
     
 	@Override
-	public double gerarContaHospede(String nomeHotel, String cpf) throws RemoteException {
+	public double gerarContaHospede(String nomeHotel, String cpf) throws Exception {
 		return daoHotel.gerarContaHospede(nomeHotel, cpf);
 	}
 
 	@Override
-	public Quarto getQuartoByNum(String nomeHotel, int num) throws RemoteException {
+	public Quarto getQuartoByNum(String nomeHotel, int num) throws Exception {
 		return daoHotel.getQuartoByNum(nomeHotel, num);
+	}
+
+	@Override
+	public String acharPendenciaFinanceiraHospede(String cpf) throws Exception {
+		return daoHotel.acharPendenciaFinanceiraHospede(cpf);
 	}
 
 

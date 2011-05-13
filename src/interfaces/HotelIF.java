@@ -6,6 +6,8 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import exceptions.InexistentEntityException;
+
 import models.Hospede;
 import models.Hotel;
 import models.Quarto;
@@ -15,41 +17,46 @@ public interface HotelIF extends Remote{
 	
 //	Hotel
 	
-	public Hotel getHotelByNome(String nomeHotel) throws RemoteException;
+	public String cadastrarHotel(String nomeHotel, String nomeGerente, String endereco, double valorDiaria) throws RemoteException, InexistentEntityException, Exception;
 	
-	public void removeHotelByNome(String HotelNome) throws RemoteException;
+	public Hotel getHotelByNome(String nomeHotel) throws RemoteException, Exception;
 	
-	public String listarHoteis() throws RemoteException;
+	public void removeHotelByNome(String HotelNome) throws RemoteException, Exception;
 	
-	public HashMap<Quarto, ArrayList<Reserva>> getAllReservasPorQuarto(String nomeHotel) throws RemoteException;
+	public String listarHoteis() throws RemoteException, Exception;
 	
-    public String estenderReserva(String nomeHotel, String cpf, int numQuarto, int numDias) throws RemoteException, ParseException;
+	public HashMap<Quarto, ArrayList<Reserva>> getAllReservasPorQuarto(String nomeHotel) throws RemoteException, Exception;
+	
+    public String estenderReserva(String nomeHotel, String cpf, int numQuarto, int numDias) throws RemoteException, ParseException, Exception;
 
 	
 //	Quarto
 	
-	public boolean addQuarto(String nomeHotel, Quarto q) throws RemoteException;
+	String cadastrarQuarto(String nomeHotel, int num) throws RemoteException, Exception;
 
-    public boolean deleteQuarto(String nomeHotel, int num) throws RemoteException;
+    public boolean deleteQuarto(String nomeHotel, int num) throws RemoteException, Exception;
     
-    public Quarto getQuartoByNum(String nomeHotel, int num) throws RemoteException;
+    public Quarto getQuartoByNum(String nomeHotel, int num) throws RemoteException, Exception;
     
-    public String reservarQuarto(String nomeHotel, int numQuarto, String cpf, String dataEntrada, String dataSaida) throws RemoteException, ParseException;
+    public String reservarQuarto(String nomeHotel, int numQuarto, String cpf, String dataEntrada, String dataSaida) throws RemoteException, ParseException, Exception;
     
 //    Hospede
     
-    public String cadastrarHospede(String nomeHotel, String nome, String cpf, String email, String telefone) throws RemoteException;
+    public String cadastrarHospede(String nomeHotel, String nome, String cpf, String email, String telefone) throws RemoteException, Exception;
     
-    public boolean removeHospedeByCpf(String nomeHotel, String cpf) throws RemoteException;
+    public boolean removeHospedeByCpf(String nomeHotel, String cpf) throws RemoteException, Exception;
 	
-    public Hospede getHospedeByCpf(String nomeHotel, String cpf) throws RemoteException;
+    public Hospede getHospedeByCpf(String nomeHotel, String cpf) throws RemoteException, Exception;
     
-    public String alocarHospedeQuarto(String nomeHotel, int num, String cpf) throws RemoteException;
+    public String alocarHospedeQuarto(String nomeHotel, int num, String cpf, String dataTermino) throws ParseException, RemoteException, Exception;
     
-    public boolean pagarDivida(String nomeHotel, String cpf, double valor) throws RemoteException;
+    public boolean pagarDivida(String nomeHotel, String cpf, double valor) throws RemoteException, Exception;
     
-    public void consultarPendenciaFinanceiraHospede(String nomeHotel, String cpf) throws RemoteException;
+    public String consultarPendenciaFinanceiraHospede(String nomeHotel, String cpf) throws RemoteException, Exception;
 	
-	public double gerarContaHospede(String nomeHotel, String cpf) throws RemoteException;
+	public double gerarContaHospede(String nomeHotel, String cpf) throws RemoteException, Exception;
+
+    public String acharPendenciaFinanceiraHospede(String cpf) throws RemoteException, Exception;
+
 
 }

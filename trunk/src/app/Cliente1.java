@@ -27,7 +27,6 @@ public class Cliente1 {
 		try {
 			Registry registry = LocateRegistry.getRegistry(1099);
 			HotelIF hotel = (HotelIF) registry.lookup("HotelService");
-			hotel.testar();
 			
 			GenericDAO gDao = new GenericDAO();
 	    	Hotel hotel1 = new Hotel();

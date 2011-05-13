@@ -4,13 +4,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
+import org.dyno.visual.swing.layouts.Constraints;
 import org.dyno.visual.swing.layouts.GroupLayout;
+import org.dyno.visual.swing.layouts.Leading;
 
 //VS4E -- DO NOT REMOVE THIS LINE!
 public class TelaPrincipal extends JFrame {
@@ -23,11 +26,13 @@ public class TelaPrincipal extends JFrame {
 	private JMenuItem jMenuItem3;
 	private JMenuItem jMenuItem4;
 	private JMenu jMenu1;
-	private JMenuItem jMenuItem5;
-	private JMenuItem jMenuItem6;
 	private JMenuItem jMenuItem7;
 	private JMenu jMenu2;
 	private JMenuBar jMenuBar0;
+	private JMenuItem jMenuItem8;
+	private JLabel jLabel0;
+	private JLabel jLabel1;
+	private JMenuItem jMenuItem5;
 	private static final String PREFERRED_LOOK_AND_FEEL = "javax.swing.plaf.metal.MetalLookAndFeel";
 	public TelaPrincipal() {
 		initComponents();
@@ -35,8 +40,54 @@ public class TelaPrincipal extends JFrame {
 
 	private void initComponents() {
 		setLayout(new GroupLayout());
+		add(getJLabel1(), new Constraints(new Leading(147, 10, 10), new Leading(247, 10, 10)));
+		add(getJLabel0(), new Constraints(new Leading(193, 92, 10, 10), new Leading(51, 22, 10, 10)));
 		setJMenuBar(getJMenuBar0());
 		setSize(467, 318);
+	}
+
+	private JMenuItem getJMenuItem5() {
+		if (jMenuItem5 == null) {
+			jMenuItem5 = new JMenuItem();
+			jMenuItem5.setText("Estender estadia");
+			jMenuItem5.addActionListener(new ActionListener() {
+	
+				public void actionPerformed(ActionEvent event) {
+					jMenuItem5ActionActionPerformed(event);
+				}
+			});
+		}
+		return jMenuItem5;
+	}
+
+	private JLabel getJLabel1() {
+		if (jLabel1 == null) {
+			jLabel1 = new JLabel();
+			jLabel1.setText("Sistema Gerenciador de Hotel");
+		}
+		return jLabel1;
+	}
+
+	private JLabel getJLabel0() {
+		if (jLabel0 == null) {
+			jLabel0 = new JLabel();
+			jLabel0.setText("Hotéis Hilton");
+		}
+		return jLabel0;
+	}
+
+	private JMenuItem getJMenuItem8() {
+		if (jMenuItem8 == null) {
+			jMenuItem8 = new JMenuItem();
+			jMenuItem8.setText("Excluir");
+			jMenuItem8.addActionListener(new ActionListener() {
+	
+				public void actionPerformed(ActionEvent event) {
+					jMenuItem8ActionActionPerformed(event);
+				}
+			});
+		}
+		return jMenuItem8;
 	}
 
 	private JMenuBar getJMenuBar0() {
@@ -53,9 +104,9 @@ public class TelaPrincipal extends JFrame {
 		if (jMenu2 == null) {
 			jMenu2 = new JMenu();
 			jMenu2.setText("Movimentação");
-			jMenu2.add(getJMenuItem5());
-			jMenu2.add(getJMenuItem6());
+			jMenu2.setOpaque(false);
 			jMenu2.add(getJMenuItem7());
+			jMenu2.add(getJMenuItem5());
 		}
 		return jMenu2;
 	}
@@ -72,22 +123,6 @@ public class TelaPrincipal extends JFrame {
 			});
 		}
 		return jMenuItem7;
-	}
-
-	private JMenuItem getJMenuItem6() {
-		if (jMenuItem6 == null) {
-			jMenuItem6 = new JMenuItem();
-			jMenuItem6.setText("Registrar Saída");
-		}
-		return jMenuItem6;
-	}
-
-	private JMenuItem getJMenuItem5() {
-		if (jMenuItem5 == null) {
-			jMenuItem5 = new JMenuItem();
-			jMenuItem5.setText("Registrar Entrada");
-		}
-		return jMenuItem5;
 	}
 
 	private JMenu getJMenu1() {
@@ -126,9 +161,11 @@ public class TelaPrincipal extends JFrame {
 		if (jMenu0 == null) {
 			jMenu0 = new JMenu();
 			jMenu0.setText("Cadastro");
+			jMenu0.setOpaque(false);
 			jMenu0.add(getJMenuItem0());
 			jMenu0.add(getJMenuItem1());
 			jMenu0.add(getJMenuItem2());
+			jMenu0.add(getJMenuItem8());
 		}
 		return jMenu0;
 	}
@@ -207,6 +244,8 @@ public class TelaPrincipal extends JFrame {
 				frame.setVisible(true);
 			}
 		});
+		
+		
 	}
 
 	private void jMenuItem1ActionActionPerformed(ActionEvent event) {
@@ -232,6 +271,16 @@ public class TelaPrincipal extends JFrame {
 	private void jMenuItem7ActionActionPerformed(ActionEvent event) {
 		TelaReserva telaReserva = new TelaReserva();
 		telaReserva.setVisible(true);
+	}
+
+	private void jMenuItem8ActionActionPerformed(ActionEvent event) {
+		TelaExcluir telaExcluir = new TelaExcluir();
+		telaExcluir.setVisible(true);
+	}
+
+	private void jMenuItem5ActionActionPerformed(ActionEvent event) {
+		TelaEstenderReserva tela = new TelaEstenderReserva();
+		tela.setVisible(true);
 	}
 
 }

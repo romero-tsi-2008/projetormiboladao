@@ -23,7 +23,7 @@ public class HotelDAO extends GenericDAO {
 		createEntity("HOTEL");
 	}
 	
-	public String cadastrarHotel(String nomeHotel, String nomeGerente, String endereco, double valorDiaria) throws Exception {
+	public synchronized String cadastrarHotel(String nomeHotel, String nomeGerente, String endereco, double valorDiaria) throws Exception {
 		String impressora = "";
 		begin();
 		
@@ -41,7 +41,7 @@ public class HotelDAO extends GenericDAO {
 		return impressora;
 	}
 	
-	public String cadastrarQuarto(String nomeHotel, int num) throws Exception{
+	public synchronized String cadastrarQuarto(String nomeHotel, int num) throws Exception{
 		String impressora = "";
 		begin();
 		
@@ -56,7 +56,7 @@ public class HotelDAO extends GenericDAO {
 		return impressora;
 	}
 	
-	   public boolean deleteQuarto(String nomeHotel, int num) throws Exception {
+	   public synchronized boolean deleteQuarto(String nomeHotel, int num) throws Exception {
 		   begin();
 	    	Hotel hotel = getHotelByNome(nomeHotel);
 	        for (int i = 0; i<= hotel.getQuartos().size(); i++) {
@@ -101,7 +101,7 @@ public class HotelDAO extends GenericDAO {
         return null;
 	}
 	
-	public void removeHotelByNome(String nomeHotel) throws Exception {
+	public synchronized void removeHotelByNome(String nomeHotel) throws Exception {
 		begin();
     	if(banco.containsKey("Hotel")) {
 	    	for (int i=0; i<banco.get("Hotel").size(); i++) {
@@ -133,6 +133,36 @@ public class HotelDAO extends GenericDAO {
 		return impressora;
 	}
 	
+	public ArrayList<Hospede> pegarHospedes(String hotelNome) throws Exception {
+		begin();
+		
+		Hotel h = getHotelByNome(hotelNome);
+		
+		close();
+		
+		return (ArrayList<Hospede>) h.getHospedesCadastrados();
+	}
+	
+	public ArrayList<Quarto> pegarQuartos(String hotelNome) throws Exception {
+		begin();
+		
+		Hotel h = getHotelByNome(hotelNome);
+		
+		close();
+		
+		return (ArrayList<Quarto>) h.getQuartos();
+	}
+	
+//	public ArrayList<Quarto> pegarHoteis() throws Exception {
+//		begin();
+//		
+//		ArrayList<Hotel> hoteis = (ArrayList<Hotel>) banco.get("HOTEL");
+//		
+//		close();
+//		
+//		return (ArrayList<Quarto>) h.getQuartos();
+//	}
+	
     public HashMap<Quarto, ArrayList<Reserva>> getAllReservasPorQuarto(String nomeHotel) throws Exception {
     	begin();
 	    	Hotel hotelAux = getHotelByNome(nomeHotel);
@@ -145,7 +175,7 @@ public class HotelDAO extends GenericDAO {
     }
     
     
-    public String cadastrarHospede(String nomeHotel, String nome, String cpf, String email, String telefone) throws Exception {
+    public synchronized String cadastrarHospede(String nomeHotel, String nome, String cpf, String email, String telefone, String endereco) throws Exception {
     	begin();
     	String impressora = "";
     	Hotel hotel = getHotelByNome(nomeHotel);
@@ -164,14 +194,17 @@ public class HotelDAO extends GenericDAO {
     	novoHospede.setCpf(cpf);
     	novoHospede.setEmail(email);
     	novoHospede.setTelefone(telefone);
+    	novoHospede.setEndereco(endereco);
     	
     	hotel.getHospedesCadastrados().add(novoHospede);
     	commit();
         close();
+        impressora += "Hospede "+novoHospede.getNome()+" cadastrado com sucesso";
     	return impressora;
     }
     
-	public boolean removeHospedeByCpf(String nomeHotel, String cpf) throws Exception {
+	public synchronized String removeHospedeByCpf(String nomeHotel, String cpf) throws Exception {
+		String impressora = "";
 		begin();
 		Hospede hospedeAux = getHospedeByCpf(nomeHotel, cpf);
 		Hotel hotelAux = getHotelByNome(nomeHotel);
@@ -179,15 +212,17 @@ public class HotelDAO extends GenericDAO {
     	for (Hospede h : hotelAux.getHospedesCadastrados()) {
     		if (h.getCpf().equals(cpf)) {
     			hotelAux.getHospedesCadastrados().remove(h);
-    			return true;
+    			impressora += "Hospede "+h.getNome()+"removido com sucesso";
+    			return impressora;
     		}
     	}
     	commit();
         close();
-    	return false;
+        
+    	return impressora;
 	}
     
-    public String reservarQuarto(String nomeHotel, int numQuarto, String cpf, String dataEntrada, String dataSaida) throws Exception {
+    public synchronized String reservarQuarto(String nomeHotel, int numQuarto, String cpf, String dataEntrada, String dataSaida) throws Exception {
     	begin();
     	String impressora = "";
     	if (verificaDataParaReserva(nomeHotel, numQuarto, dataEntrada, dataSaida) == false) {
@@ -279,7 +314,7 @@ public class HotelDAO extends GenericDAO {
     	return impressora;
     }
     
-    public String alocarHospedeQuarto(String nomeHotel, int num, String cpf, String dataTermino) throws Exception {
+    public synchronized String alocarHospedeQuarto(String nomeHotel, int num, String cpf, String dataTermino) throws Exception {
     	begin();
     	String impressora = "";
 //    	Hotel hotel = getHotelByNome(nomeHotel);
@@ -315,7 +350,7 @@ public class HotelDAO extends GenericDAO {
     	return impressora;
     }
 
-    public String estenderReserva(String nomeHotel, String cpf, int numQuarto, int numDias) throws Exception {
+    public synchronized String estenderReserva(String nomeHotel, String cpf, int numQuarto, int numDias) throws Exception {
     	begin();
     	String impressora = "";
     	Hotel hotelAux = getHotelByNome(nomeHotel);
@@ -348,7 +383,7 @@ public class HotelDAO extends GenericDAO {
 		return impressora;
     }
     
-	public String gerarContaHospede(String nomeHotel, String cpf) throws Exception {
+	public synchronized String gerarContaHospede(String nomeHotel, String cpf) throws Exception {
 		String impressora = "";
 		begin();
 		Hotel hotelAux = getHotelByNome(nomeHotel);
@@ -367,7 +402,7 @@ public class HotelDAO extends GenericDAO {
 		return impressora;
 	}
     
-    public String pagarDivida(String nomeHotel, String cpf, double valor) throws Exception {
+    public synchronized String pagarDivida(String nomeHotel, String cpf, double valor) throws Exception {
     	String impressora = "";
     	begin();
     	Hotel hotel = getHotelByNome(nomeHotel);
@@ -382,10 +417,11 @@ public class HotelDAO extends GenericDAO {
     		else {
     			if (valor > valorDivida) {
     				impressora += "Divida do hospede "+ hospedeAux.getNome()+" do quarto "+ hospedeAux.getUltimaHospedagem().getQuarto().getNum()+ " com valor de R$:"+ hospedeAux.getUltimaHospedagem().getDivida()+ " paga com sucesso. Troco = R$: "+(valor-valorDivida);
+    				hospedeAux.getUltimaHospedagem().setDivida(0);
     				return impressora;
     			}
     			else if (valorDivida < valor) {
-    				impressora += "ERRO: favor entrar com um valor igual ao da divida";
+    				impressora += "ERRO: favor entrar com um valor igual ou maior ao da divida";
     				return impressora;
     			}
     		}
@@ -440,7 +476,7 @@ public class HotelDAO extends GenericDAO {
 		return impressora;
     }
     
-    public Hospede getHospedeByCpf(String nomeHotel, String cpf) throws Exception {
+    public synchronized Hospede getHospedeByCpf(String nomeHotel, String cpf) throws Exception {
     	begin();
     	Hotel hotelAux = getHotelByNome(nomeHotel);
     	
@@ -452,8 +488,6 @@ public class HotelDAO extends GenericDAO {
     	close();
     	return null;
 	}
-    
-
     
 //    verificaDataParaReserva com data String
     public boolean verificaDataParaReserva(String nomeHotel, int numQuarto, String dataEntrada, String dataSaida) throws Exception {
@@ -515,5 +549,25 @@ public class HotelDAO extends GenericDAO {
 		int diasEntreDatas = (int) (diferenca / (86400000));
 		return diasEntreDatas;
     }
+
+	public ArrayList<Hotel> pegarHoteis() throws Exception{
+		begin();
+		ArrayList<Object> hoteis = new ArrayList<Object>();
+		
+		ArrayList<Hotel> retorno = new ArrayList<Hotel>();
+		
+		for (String s : banco.keySet()) {
+			if (s.equals("HOTEL")) {
+				hoteis = banco.get("HOTEL");
+			}
+			Iterator it = hoteis.iterator();
+			while (it.hasNext()) {
+				Hotel h = (Hotel) it.next();
+				retorno.add(h);
+			}
+		}
+		close();
+		return retorno;
+	}
 
 }

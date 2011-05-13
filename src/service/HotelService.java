@@ -47,6 +47,17 @@ public class HotelService extends UnicastRemoteObject implements  HotelIF {
 	}
 	
 	@Override
+	public ArrayList<Hospede> pegarHospedes(String hotelNome) throws Exception {
+		return daoHotel.pegarHospedes(hotelNome);
+	}
+
+	@Override
+	public ArrayList<Quarto> pegarQuartos(String hotelNome) throws Exception {
+		return daoHotel.pegarQuartos(hotelNome);
+	}
+
+	
+	@Override
 	public HashMap<Quarto, ArrayList<Reserva>> getAllReservasPorQuarto(String nomeHotel) throws Exception {
 		return daoHotel.getAllReservasPorQuarto(nomeHotel);
 	}
@@ -76,8 +87,8 @@ public class HotelService extends UnicastRemoteObject implements  HotelIF {
 //	Hospede
 	
 	@Override
-    public String cadastrarHospede(String nomeHotel, String nome, String cpf, String email, String telefone) throws Exception {
-    	return daoHotel.cadastrarHospede(nomeHotel, nome, cpf, email, telefone);
+    public String cadastrarHospede(String nomeHotel, String nome, String cpf, String email, String telefone, String endereco) throws Exception {
+    	return daoHotel.cadastrarHospede(nomeHotel, nome, cpf, email, telefone, endereco);
     }
     
 	@Override
@@ -106,7 +117,7 @@ public class HotelService extends UnicastRemoteObject implements  HotelIF {
     }
     
 	@Override
-	public boolean removeHospedeByCpf(String nomeHotel, String cpf) throws Exception {
+	public String removeHospedeByCpf(String nomeHotel, String cpf) throws Exception {
 		return daoHotel.removeHospedeByCpf(nomeHotel, cpf);
 	}
     
@@ -123,6 +134,11 @@ public class HotelService extends UnicastRemoteObject implements  HotelIF {
 	@Override
 	public String acharPendenciaFinanceiraHospede(String cpf) throws Exception {
 		return daoHotel.acharPendenciaFinanceiraHospede(cpf);
+	}
+
+	@Override
+	public ArrayList<Hotel> pegarHoteis() throws Exception {
+		return daoHotel.pegarHoteis();
 	}
 
 

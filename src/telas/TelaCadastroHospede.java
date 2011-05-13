@@ -2,8 +2,6 @@ package telas;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -36,13 +34,14 @@ public class TelaCadastroHospede extends JFrame {
 	private JButton jButton0;
 	private JButton jButton1;
 	private JLabel jLabel0;
+	private JLabel jLabel6;
+	private JTextField jTextField5;
 	private static final String PREFERRED_LOOK_AND_FEEL = "javax.swing.plaf.metal.MetalLookAndFeel";
 	public TelaCadastroHospede() {
 		initComponents();
 	}
 
-	private void () {
-//		setUndecorated(true);
+	private void initComponents() {
 		setLayout(new GroupLayout());
 		add(getJLabel1(), new Constraints(new Leading(61, 12, 12), new Leading(59, 12, 12)));
 		add(getJLabel2(), new Constraints(new Leading(58, 12, 12), new Leading(95, 12, 12)));
@@ -54,10 +53,27 @@ public class TelaCadastroHospede extends JFrame {
 		add(getJTextField0(), new Constraints(new Leading(109, 208, 10, 10), new Leading(97, 12, 12)));
 		add(getJTextField2(), new Constraints(new Leading(109, 297, 10, 10), new Leading(170, 12, 12)));
 		add(getJTextField3(), new Constraints(new Leading(109, 144, 12, 12), new Leading(204, 12, 12)));
-		add(getJButton0(), new Constraints(new Leading(124, 10, 10), new Leading(253, 10, 10)));
-		add(getJButton1(), new Constraints(new Leading(252, 10, 10), new Leading(253, 12, 12)));
 		add(getJLabel0(), new Constraints(new Leading(180, 10, 10), new Leading(12, 21, 12, 12)));
+		add(getJButton0(), new Constraints(new Leading(125, 10, 10), new Leading(270, 10, 10)));
+		add(getJButton1(), new Constraints(new Leading(252, 10, 10), new Leading(270, 12, 12)));
+		add(getJLabel6(), new Constraints(new Leading(61, 12, 12), new Leading(239, 10, 10)));
+		add(getJTextField5(), new Constraints(new Leading(115, 192, 10, 10), new Leading(237, 12, 12)));
 		setSize(468, 311);
+	}
+
+	private JTextField getJTextField5() {
+		if (jTextField5 == null) {
+			jTextField5 = new JTextField();
+		}
+		return jTextField5;
+	}
+
+	private JLabel getJLabel6() {
+		if (jLabel6 == null) {
+			jLabel6 = new JLabel();
+			jLabel6.setText("Hotel:");
+		}
+		return jLabel6;
 	}
 
 	private JLabel getJLabel0() {
@@ -75,14 +91,9 @@ public class TelaCadastroHospede extends JFrame {
 			jButton1.addActionListener(new ActionListener() {
 				
 				@Override
-				public void actionPerformed(ActionEvent arg0) {
+				public void actionPerformed(ActionEvent event) {
 					// TODO Auto-generated method stub
-					try {
-//						String retorno = Servico.getServico().cadastrarHospede(jTextField5.getText(), jTextField4.getText(), cpf, email, telefone);
-					}
-					catch(Exception e) {
-						e.printStackTrace();
-					}
+					jButton1ActionActionPerformed(event);
 				}
 			});
 			
@@ -150,7 +161,7 @@ public class TelaCadastroHospede extends JFrame {
 	private JLabel getJLabel3() {
 		if (jLabel3 == null) {
 			jLabel3 = new JLabel();
-			jLabel3.setText("Endere�o:");
+			jLabel3.setText("Endereco:");
 		}
 		return jLabel3;
 	}
@@ -217,6 +228,21 @@ public class TelaCadastroHospede extends JFrame {
 		TelaListagemHospedes tela = new TelaListagemHospedes();
 		tela.setVisible(true);
 		this.dispose();
+	}
+	
+	private void jButton1ActionActionPerformed(ActionEvent event){
+		String nome = jTextField4.getText();
+		String cpf = jTextField3.getText();
+		String email = jTextField0.getText();
+		String telefone = jTextField1.getText();
+		String endereco = jTextField2.getText();
+		String nomeHotel = jTextField5.getText();
+		try{
+			Servico.getServico().cadastrarHospede(nomeHotel, nome, cpf, email, telefone, endereco);
+			JOptionPane.showMessageDialog(null, "Hospede cadastrado!","",JOptionPane.INFORMATION_MESSAGE);
+		}catch(Exception e){
+			JOptionPane.showMessageDialog(null, "ERRO AO CADASTRAR HOSPEDE! " + e.getMessage(),"",JOptionPane.INFORMATION_MESSAGE);
+		}
 	}
 
 }

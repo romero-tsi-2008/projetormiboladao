@@ -3,11 +3,10 @@ package telas;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -15,6 +14,8 @@ import javax.swing.UIManager;
 import org.dyno.visual.swing.layouts.Constraints;
 import org.dyno.visual.swing.layouts.GroupLayout;
 import org.dyno.visual.swing.layouts.Leading;
+
+import util.Servico;
 
 //VS4E -- DO NOT REMOVE THIS LINE!
 public class TelaCadastroQuarto extends JFrame {
@@ -26,33 +27,29 @@ public class TelaCadastroQuarto extends JFrame {
 	private JButton jButton1;
 	private JLabel jLabel0;
 	private JTextField jTextField0;
-	private JComboBox jComboBox0;
+	private JTextField jTextField1;
 	private static final String PREFERRED_LOOK_AND_FEEL = "javax.swing.plaf.metal.MetalLookAndFeel";
 	public TelaCadastroQuarto() {
 		initComponents();
 	}
 
 	private void initComponents() {
-//		setUndecorated(true);
 		setLayout(new GroupLayout());
 		add(getJLabel1(), new Constraints(new Leading(48, 10, 10), new Leading(59, 10, 10)));
 		add(getJLabel0(), new Constraints(new Leading(156, 12, 12), new Leading(14, 25, 12, 12)));
 		add(getJTextField0(), new Constraints(new Leading(104, 274, 10, 10), new Leading(59, 12, 12)));
 		add(getJButton0(), new Constraints(new Leading(115, 10, 10), new Leading(147, 10, 10)));
 		add(getJButton1(), new Constraints(new Leading(227, 10, 10), new Leading(147, 10, 10)));
-		add(getJComboBox0(), new Constraints(new Leading(104, 236, 10, 10), new Leading(95, 12, 12)));
 		add(getJLabel2(), new Constraints(new Leading(64, 12, 12), new Leading(101, 10, 10)));
+		add(getJTextField1(), new Constraints(new Leading(104, 156, 10, 10), new Leading(99, 12, 12)));
 		setSize(420, 214);
 	}
 
-	private JComboBox getJComboBox0() {
-		if (jComboBox0 == null) {
-			jComboBox0 = new JComboBox();
-			jComboBox0.setModel(new DefaultComboBoxModel(new Object[] { "item0", "item1", "item2", "item3" }));
-			jComboBox0.setDoubleBuffered(false);
-			jComboBox0.setBorder(null);
+	private JTextField getJTextField1() {
+		if (jTextField1 == null) {
+			jTextField1 = new JTextField();
 		}
-		return jComboBox0;
+		return jTextField1;
 	}
 
 	private JTextField getJTextField0() {
@@ -74,6 +71,12 @@ public class TelaCadastroQuarto extends JFrame {
 		if (jButton1 == null) {
 			jButton1 = new JButton();
 			jButton1.setText("CADASTRAR");
+			jButton1.addActionListener(new ActionListener() {
+	
+				public void actionPerformed(ActionEvent event) {
+					jButton1ActionActionPerformed(event);
+				}
+			});
 		}
 		return jButton1;
 	}
@@ -146,6 +149,19 @@ public class TelaCadastroQuarto extends JFrame {
 		TelaListagemQuartos tela = new TelaListagemQuartos();
 		tela.setVisible(true);
 		this.dispose();
+	}
+
+	private void jButton1ActionActionPerformed(ActionEvent event) {
+		String numero = jTextField0.getText();
+		String hotel = jTextField1.getText();
+		
+		try{
+			int num = Integer.parseInt(numero);
+			Servico.getServico().cadastrarQuarto(hotel, num);
+			JOptionPane.showMessageDialog(null, "Quarto cadastrado!","",JOptionPane.INFORMATION_MESSAGE);
+		}catch(Exception e){
+			JOptionPane.showMessageDialog(null, "ERRO AO CADASTRAR QUARTO! " + e.getMessage(),"",JOptionPane.INFORMATION_MESSAGE);
+		}
 	}
 
 }

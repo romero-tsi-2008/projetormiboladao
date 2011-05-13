@@ -58,7 +58,7 @@ public class TelaCadastroHospede extends JFrame {
 	private JLabel getJLabel0() {
 		if (jLabel0 == null) {
 			jLabel0 = new JLabel();
-			jLabel0.setText("Cadastro de Hóspede");
+			jLabel0.setText("Cadastro de Hospede");
 		}
 		return jLabel0;
 	}
@@ -67,6 +67,7 @@ public class TelaCadastroHospede extends JFrame {
 		if (jButton1 == null) {
 			jButton1 = new JButton();
 			jButton1.setText("CADASTRAR");
+			
 		}
 		return jButton1;
 	}
@@ -131,7 +132,7 @@ public class TelaCadastroHospede extends JFrame {
 	private JLabel getJLabel3() {
 		if (jLabel3 == null) {
 			jLabel3 = new JLabel();
-			jLabel3.setText("Endereço:");
+			jLabel3.setText("Endereï¿½o:");
 		}
 		return jLabel3;
 	}

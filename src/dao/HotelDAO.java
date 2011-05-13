@@ -100,14 +100,15 @@ public class HotelDAO extends GenericDAO {
     }
     
     
-    public boolean cadastrarHospede(String nomeHotel, String nome, String cpf, String email, String telefone) {
+    public String cadastrarHospede(String nomeHotel, String nome, String cpf, String email, String telefone) {
+    	String impressora = "";
     	Hotel hotel = getHotelByNome(nomeHotel);
     	
     	if (hotel.getHospedesCadastrados().size() > 0) {
     		for (Hospede h : hotel.getHospedesCadastrados()) {
     			if (h.getCpf().equals(cpf)) {
-    				System.out.println("ERRO: o hospede "+h.getNome()+" ja se encontra cadastrado em no hotel "+hotel.getNome()+"!");
-    				return false;
+    				impressora += "ERRO: o hospede "+h.getNome()+" ja se encontra cadastrado em no hotel "+hotel.getNome();
+    				return impressora;
     			}
     		}
     	}
@@ -119,7 +120,7 @@ public class HotelDAO extends GenericDAO {
     	novoHospede.setTelefone(telefone);
     	
     	hotel.getHospedesCadastrados().add(novoHospede);
-    	return true;
+    	return impressora;
     }
     
 	public boolean removeHospedeByCpf(String nomeHotel, String cpf) {
@@ -135,7 +136,12 @@ public class HotelDAO extends GenericDAO {
     	return false;
 	}
     
-    public boolean reservarQuarto(String nomeHotel, int numQuarto, String cpf, String dataEntrada, String dataSaida) {
+    public String reservarQuarto(String nomeHotel, int numQuarto, String cpf, String dataEntrada, String dataSaida) throws ParseException {
+    	String impressora = "";
+    	if (verificaDataParaReserva(nomeHotel, numQuarto, dataEntrada, dataSaida) == false) {
+    		return impressora += "ERRO: Nao eh possivel realizar reserva no periodo de "+dataEntrada+" a "+dataSaida;
+    	}
+    	
     	Hotel hotel = getHotelByNome(nomeHotel);
     	Hospede hospedeEmQuestao = new Hospede();
     	for (Quarto q : hotel.getQuartos()) {
@@ -162,10 +168,12 @@ public class HotelDAO extends GenericDAO {
 		    						hospedeEmQuestao = h;
 		    						if (h.getUltimaHospedagem().getDivida() == 0) {
 		    							novaReserva.setHospede(h);
+		    							impressora += "Reserva realizada com sucesso";
+		    							return impressora;
 		    						}
 		    						else {
-		    							System.out.println("ERRO: nao eh possivel realizar reserva pois o hospede "+h.getNome()+"possui pendencia financeiras relativas a�sua ultima hospedagem");
-		    							return false;
+		    							impressora += "ERRO: nao eh possivel realizar reserva pois o hospede "+h.getNome()+"possui pendencia financeiras relativas a sua ultima hospedagem";
+		    							return impressora;
 		    						}
 		    					}
 		    				}
@@ -187,16 +195,16 @@ public class HotelDAO extends GenericDAO {
     		    							novaReserva.setHospede(h);
     		    						}
     		    						else {
-    		    							System.out.println("ERRO: nao eh possivel realizar reserva pois o hopede "+h.getNome()+"possui pendencia financeiras relativas a sua ultima hospedagem");
-    		    							return false;
+    		    							impressora += "ERRO: nao eh possivel realizar reserva pois o hopede "+h.getNome()+"possui pendencia financeiras relativas a sua ultima hospedagem";
+    		    							return impressora;
     		    						}
     		    					}
     		    				}
     						}
     						else {
-    							System.out.println("Desculpe, nao eh possivel reservar o quarto "+q.getNum()+" do hotel "+hotel.getNome()+
-    												" no periodo requisitado pois o mesmo ja se encontra reservado para o hospede "+r.getHospede().getNome());
-    							return false;
+    							impressora += "ERRO: Desculpe, nao eh possivel reservar o quarto "+q.getNum()+" do hotel "+hotel.getNome()+
+    												" no periodo requisitado pois o mesmo ja se encontra reservado para o hospede "+r.getHospede().getNome();
+    							return impressora;
     						}
     					}
     				}
@@ -204,20 +212,21 @@ public class HotelDAO extends GenericDAO {
     					e.printStackTrace();
     				}    				
     				
-    				System.out.println("O quarto "+q.getNum()+" do hotel "+hotel.getNome()+" foi reservado com sucessp para o hospede "+hospedeEmQuestao.getNome()+" para o periodo de "+dataEntrada+ " a "+dataSaida);
-    				return true;
+    				impressora += "O quarto "+q.getNum()+" do hotel "+hotel.getNome()+" foi reservado com sucessp para o hospede "+hospedeEmQuestao.getNome()+" para o periodo de "+dataEntrada+ " a "+dataSaida;
+    				;
     			}
     			else {
-    				System.out.println("Desculpe, nao eh possivel reservar o quarto "+q.getNum()+" do hotel "+hotel.getNome()+
-							" no periodo requisitado pois o mesmo ja se encontra reservado para o hospede "+q.getHospede().getNome());
-    				return false;
+    				impressora += "ERRO: Desculpe, nao eh possivel reservar o quarto "+q.getNum()+" do hotel "+hotel.getNome()+
+							" no periodo requisitado pois o mesmo ja se encontra reservado para o hospede "+q.getHospede().getNome();
+    				return impressora;
     			}
     		}
     	}
-    	return true;
+    	return impressora;
     }
     
-    public boolean alocarHospedeQuarto(String nomeHotel, int num, String cpf, String dataTermino) throws ParseException {
+    public String alocarHospedeQuarto(String nomeHotel, int num, String cpf, String dataTermino) throws ParseException {
+    	String impressora = "";
     	Hotel hotel = getHotelByNome(nomeHotel);
     	Quarto quartoAux = getQuartoByNum(nomeHotel, num);
     	Hospede hospedeAux = getHospedeByCpf(nomeHotel, cpf);
@@ -240,34 +249,43 @@ public class HotelDAO extends GenericDAO {
     			int diasEntreDatas = (int) (diferenca / (86400000));
     			hospedeAux.getUltimaHospedagem().setNumDiarias(diasEntreDatas);
     			
-    			System.out.println("Hospede "+hospedeAux.getNome()+" alocado ao quarto "+quartoAux.getNum()+" com sucesso");
-    			return true;
+    			impressora += "Hospede "+hospedeAux.getNome()+" alocado ao quarto "+quartoAux.getNum()+" com sucesso";
+    			return impressora;
     		}
     	}
-    	return false;
+    	impressora += "Nao foi possivel alocar o hospede "+hospedeAux.getNome()+" ao quarto "+quartoAux.getNum()+". Motivo desconhecido";
+    	return impressora;
     }
-    
-//    public boolean estenderReserva(String nomeHotel, String cpf, int numQuarto, int numDias) {
-//    	Hotel hotelAux = getHotelByNome(nomeHotel);
-//    	Hospede hospedeAux = getHospedeByCpf(nomeHotel, cpf);
-//    	
-//
-//		for (Quarto q : hotelAux.getQuartos()) {
-//			ArrayList<Reserva> reservas = q.getReservas();
-//			if (q.getHospede().getCpf().equals(cpf)) {
-//				if (q.isOcupado()) { //se ta ocupado e o cpf eh o do parametro, eh pq eh o quarto q o cara ta
-//					Calendar dataTermino = hospedeAux.getUltimaHospedagem().getDataTermino();
-//					Calendar novaDataTermino = dataTermino.add(Calendar.DAY_OF_MONTH, numDias);
-//					
-//					for(Reserva r : reservas) {
-//						if (r.getDataEntrada() > novaDataTermino) {
-//							hospedeAux.getUltimaHospedagem().setDataTermino(novaDataTermino);
-//						}
-//					}
-//				}
-//			}
-//		}
-//    }
+
+    public String estenderReserva(String nomeHotel, String cpf, int numQuarto, int numDias) throws ParseException {
+    	String impressora = "";
+    	Hotel hotelAux = getHotelByNome(nomeHotel);
+    	Hospede hospedeAux = getHospedeByCpf(nomeHotel, cpf);
+    	
+
+		for (Quarto q : hotelAux.getQuartos()) {
+			ArrayList<Reserva> reservas = q.getReservas();
+			if (q.getHospede().getCpf().equals(cpf)) {
+				if (q.isOcupado()) { //se ta ocupado e o cpf eh o do parametro, eh pq eh o quarto q o cara ta
+					Calendar dataSaida = new GregorianCalendar();
+					Calendar dataEntrada = hospedeAux.getUltimaHospedagem().getDataInicio();
+					dataSaida = hospedeAux.getUltimaHospedagem().getDataTermino();
+					
+					Calendar novaDataSaida= new GregorianCalendar();
+					novaDataSaida.setTimeInMillis(dataSaida.getTimeInMillis() + (numDias * 86400000));
+
+					if (verificaDataParaReserva(nomeHotel, numQuarto, dataSaida, novaDataSaida) == true) {
+						q.getHospede().getUltimaHospedagem().setDataTermino(novaDataSaida);
+						impressora += "A reserva do hospede "+q.getHospede()+" que teve inicio na data "+dataEntrada+" teve sua data final estendida do dia "+
+										dataSaida+" para o dia "+novaDataSaida;
+						return impressora;
+					}
+				}
+			}
+		}
+		impressora += "Nao foi possivel estender a reserva. Erro desconhecido";
+		return impressora;
+    }
     
 	public double gerarContaHospede(String nomeHotel, String cpf) {
 		Hotel hotelAux = getHotelByNome(nomeHotel);
@@ -276,7 +294,7 @@ public class HotelDAO extends GenericDAO {
 		for (Quarto q : hotelAux.getQuartos()) {
 			if (q.getHospede().getCpf().equals(cpf)) {
 				if (q.isOcupado()) { //se ta ocupado e o cpf eh o do parametro, eh pq eh o quarto q o cara ta
-					double valorConta = 100 * (q.getHospede().getUltimaHospedagem().getNumDiarias());
+					double valorConta = hotelAux.getDiaria() * (q.getHospede().getUltimaHospedagem().getNumDiarias());
 					System.out.println("Conta gerada. Valor = "+valorConta);
 					return valorConta;
 				}
@@ -356,5 +374,59 @@ public class HotelDAO extends GenericDAO {
     	}
     	return null;
 	}
+    
+    public int pegarDiferencaDatasEmDias(Calendar data1, Calendar data2) {
+    	long diferenca = data1.getTimeInMillis() - data2.getTimeInMillis();
+		int diasEntreDatas = (int) (diferenca / (86400000));
+		return diasEntreDatas;
+    }
+    
+//    verificaDataParaReserva com data String
+    public boolean verificaDataParaReserva(String nomeHotel, int numQuarto, String dataEntrada, String dataSaida) throws ParseException {
+    	Hotel hotelAux = getHotelByNome(nomeHotel);
+    	Quarto quartoAux = getQuartoByNum(nomeHotel, numQuarto);
+    	ArrayList<Reserva> reservas = quartoAux.getReservas();
+    	Calendar entradaCalendar = new GregorianCalendar();
+    	Calendar saidaCalendar = new GregorianCalendar();
+    	int quantDiasReserva = 0;
+    	
+    	SimpleDateFormat formatador = new SimpleDateFormat("dd/MM/yyyy");
+		entradaCalendar.setTime(formatador.parse(dataEntrada));
+		saidaCalendar.setTime(formatador.parse(dataSaida));
+		quantDiasReserva = pegarDiferencaDatasEmDias(entradaCalendar, saidaCalendar);
+    	
+		
+		Reserva reservaAnterior = null;
+    	for (Reserva reservaAtual : reservas) {
+    		if (reservaAnterior != null) {
+    			if ((pegarDiferencaDatasEmDias(reservaAnterior.getDataSaida(), reservaAtual.getDataEntrada() ) < quantDiasReserva) && (entradaCalendar.after(reservaAnterior) && saidaCalendar.before(reservaAtual) ) ) {
+    				return true;
+        		}	
+    		}
+    		reservaAnterior = reservaAtual;
+    	}
+    	return false;
+    }
+    
+//    verificaDataParaReserva com data Calendar
+    public boolean verificaDataParaReserva(String nomeHotel, int numQuarto, Calendar dataEntrada, Calendar dataSaida) throws ParseException {
+    	Hotel hotelAux = getHotelByNome(nomeHotel);
+    	Quarto quartoAux = getQuartoByNum(nomeHotel, numQuarto);
+    	ArrayList<Reserva> reservas = quartoAux.getReservas();
+    	int quantDiasReserva = 0;
+    	
+		quantDiasReserva = pegarDiferencaDatasEmDias(dataEntrada, dataSaida);    	
+		
+		Reserva reservaAnterior = null;
+    	for (Reserva reservaAtual : reservas) {
+    		if (reservaAnterior != null) {
+    			if ((pegarDiferencaDatasEmDias(reservaAnterior.getDataSaida(), reservaAtual.getDataEntrada() ) < quantDiasReserva) && (dataEntrada.after(reservaAnterior) && dataSaida.before(reservaAtual) ) ) {
+    				return true;
+        		}	
+    		}
+    		reservaAnterior = reservaAtual;
+    	}
+    	return false;
+    }
 
 }

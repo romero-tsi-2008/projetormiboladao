@@ -24,8 +24,10 @@ public class Hotel implements Serializable {
     private String nome;
     private String endereco;
     private String nomeGerente;
+    private double diaria;
     private List<Quarto> quartos;
     private List<Hospede> hospedesCadastrados;
+    
 
     public Hotel() throws RemoteException {
         quartos = new ArrayList<Quarto>();
@@ -56,7 +58,15 @@ public class Hotel implements Serializable {
         this.nomeGerente = nomeGerente;
     }
 
-    public List<Quarto> getQuartos() {
+    public void setDiaria(double diaria) {
+		this.diaria = diaria;
+	}
+
+	public double getDiaria() {
+		return diaria;
+	}
+
+	public List<Quarto> getQuartos() {
         return quartos;
     }
 

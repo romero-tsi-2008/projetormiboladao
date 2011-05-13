@@ -5,7 +5,6 @@ import java.rmi.RemoteException;
 
 import models.Hospede;
 import models.Quarto;
-import dao.HospedeDAO;
 import dao.HotelDAO;
 
 public interface HotelIF extends Remote{
@@ -28,5 +27,6 @@ public interface HotelIF extends Remote{
 
 	public boolean removeHospedeByCpf(String nomeHotel, String cpf) throws RemoteException;
 	
-	public void testar() throws RemoteException;
+	public double gerarContaHospede(String nomeHotel, String cpf) throws RemoteException;
+
 }

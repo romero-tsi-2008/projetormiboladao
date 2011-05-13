@@ -14,7 +14,6 @@ import models.Hospede;
 import models.Hotel;
 import models.Quarto;
 import models.Reserva;
-import dao.HospedeDAO;
 import dao.HotelDAO;
 
 public class HotelService extends UnicastRemoteObject implements  HotelIF {
@@ -69,8 +68,9 @@ public class HotelService extends UnicastRemoteObject implements  HotelIF {
 	}
     
 	@Override
-    public void testar() throws RemoteException {
-    	System.out.println("---TESTANDO---");
-    }
+	public double gerarContaHospede(String nomeHotel, String cpf) {
+		return daoHotel.gerarContaHospede(nomeHotel, cpf);
+	}
+
 
 }
